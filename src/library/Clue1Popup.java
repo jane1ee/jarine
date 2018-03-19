@@ -11,7 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-public class CluePopup extends JFrame {
+public class Clue1Popup extends JFrame {
 	// 필드 : 배경
 	JScrollPane scrollPane;
 	Image bgImg;
@@ -20,7 +20,7 @@ public class CluePopup extends JFrame {
 	Image mouseImg;
 	Cursor mouse;
 	
-	public CluePopup() {
+	public Clue1Popup() {
 		// 마우스 커서
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		mouseImg = new ImageIcon("img/cursor.png").getImage();
