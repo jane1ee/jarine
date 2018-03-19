@@ -100,7 +100,7 @@ public class BreakLibrary extends JFrame {
 		poetBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				CluePopup clue = new CluePopup();
+				Clue1Popup clue = new Clue1Popup();
 				clue.setLocation(750, 500);
 				clue.setSize(542, 80);
 				clue.setResizable(false);
