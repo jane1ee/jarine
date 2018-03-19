@@ -100,13 +100,11 @@ public class BreakLibrary extends JFrame {
 		poetBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PoetHint poet = new PoetHint();
-				poet.setTitle("별 헤는 밤");
-				poet.setLocation(300, 130);
-				poet.setSize(798, 532);
-				poet.setResizable(false);
-				poet.setIconImage(new ImageIcon("img/favicon.jpg").getImage());
-				poet.setVisible(true);
+				CluePopup clue = new CluePopup();
+				clue.setLocation(750, 500);
+				clue.setSize(542, 80);
+				clue.setResizable(false);
+				clue.setVisible(true);
 			}
 		});
 		

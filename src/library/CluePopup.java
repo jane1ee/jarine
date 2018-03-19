@@ -28,7 +28,7 @@ public class CluePopup extends JFrame {
 		mouse = tk.createCustomCursor(mouseImg, point, "wonder");
 		setCursor(mouse);
 		
-		// 힌트 팝업창 배경화면 : 별 헤는 밤 : '별'의 갯수(13개)
+		// 문제1의 힌트 발견 팝업 : 배경화면
 		bgImg = new ImageIcon("img/clue.png").getImage();
 		background = new JPanel() {
 			public void paintComponent(Graphics g) {
@@ -51,9 +51,15 @@ public class CluePopup extends JFrame {
 		@Override
 		public void run() {
 			try {
-				Thread.sleep(5000);  // milliseconds
-				// 5초 정도 뒤에 '별 헤는 밤 '창 사라짐
+				Thread.sleep(900);  // milliseconds
+				// 0.9초 정도 뒤에 '이건 뭐지 '창 사라짐
 				setVisible(false);
+				// '별 헤는 밤' 힌트 출력
+				PoetHint poet = new PoetHint();
+				poet.setLocation(300, 130);
+				poet.setSize(798, 532);
+				poet.setResizable(false);
+				poet.setVisible(true);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
