@@ -1,10 +1,13 @@
 package library;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -21,6 +24,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+
+import library.BreakLibrary.OnOffMouse;
 
 public class LightOff extends JFrame {
 	JScrollPane scrollPane;
@@ -48,9 +53,18 @@ public class LightOff extends JFrame {
 	int clickCnt = 0;
 	// 스위치 클릭시 이벤트
 	int switchClick = 0;
+	// 마우스
+	Image mouseImg;
+	Cursor mouse;
 	
 	
 	public LightOff() {
+		// 마우스 커서
+				Toolkit tk = Toolkit.getDefaultToolkit();
+				mouseImg = new ImageIcon("img/cursor.png").getImage();
+				Point point = new Point(0, 0);
+				mouse = tk.createCustomCursor(mouseImg, point, "wonder");
+				setCursor(mouse);
 		// 처음 : 불 꺼진 배경화면
 		Image bgImg = new ImageIcon("img/lightoff.PNG").getImage();
 		
@@ -159,11 +173,23 @@ public class LightOff extends JFrame {
 		}
 
 		@Override
-		public void mouseEntered(MouseEvent e) {
-		}
-
-		@Override
 		public void mouseExited(MouseEvent e) {
+			// 버튼 마우스 오프 : 커서 원래대로 돌아오기
+			Toolkit tk = Toolkit.getDefaultToolkit();
+			mouseImg = new ImageIcon("img/cursor.png").getImage();
+			Point point = new Point(0, 0);
+			mouse = tk.createCustomCursor(mouseImg, point, "wonder");
+			setCursor(mouse);
+		}
+		
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// 버튼 마우스 온 : 커서 변경
+			Toolkit tk = Toolkit.getDefaultToolkit();
+			mouseImg = new ImageIcon("img/check.png").getImage();
+			Point point = new Point(20, 20);
+			mouse = tk.createCustomCursor(mouseImg, point, "find");
+			setCursor(mouse);
 		}
 
 		@Override

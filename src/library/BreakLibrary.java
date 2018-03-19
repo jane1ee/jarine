@@ -1,10 +1,13 @@
 package library;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -27,17 +30,28 @@ import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 
 public class BreakLibrary extends JFrame {
+	// 필드 : 배경
 	JScrollPane scrollPane;
 	Image bgImg;
+	// 필드 : 마우스
+	Image mouseImg;
+	Cursor mouse;
 	// 힌트 카운트
 	int hintCnt = 0;
-	// 정답 카운트
+	// 정답 카운트 : passCnt = 3이면 Library 탈출
 	int passCnt = 0;
 	
 	public BreakLibrary() {
+		// 마우스 커서
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		mouseImg = new ImageIcon("img/cursor.png").getImage();
+		Point point = new Point(0, 0);
+		mouse = tk.createCustomCursor(mouseImg, point, "wonder");
+		setCursor(mouse);
+		
+		
 		// 배경화면
 		bgImg = new ImageIcon("img/library.png").getImage();
-		
 		JPanel background = new JPanel() {
 			public void paintComponent(Graphics g) {
 				Dimension sizing = getSize();
@@ -52,7 +66,7 @@ public class BreakLibrary extends JFrame {
 		
 		
 		// 배경음악, 반복재생
-		LibraryBGM("bgm/a_quiet_thought.wav", true);
+		LibraryBGM("bgm/Under_Cover.wav", true);
 		
 		// 패널 레이아웃 설정
 		background.setLayout(null);
@@ -63,58 +77,36 @@ public class BreakLibrary extends JFrame {
 		JButton frameBtn = new JButton(mdFrame);
 		frameBtn.setBounds(918, 228, mdFrame.getIconWidth(), mdFrame.getIconHeight());
 		frameBtn.setBorderPainted(false);
+		frameBtn.addMouseListener(new OnOffMouse());
 		frameBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JFrame starry = new JFrame("Starry Starry Night");
-				starry.setBounds(300, 30, 450, 850);
-				JTextArea starryNight = new JTextArea(10, 30);
-				starryNight.setEditable(false);
-				
-				// 폰트 설정
-				Font poetFont = new Font("맑은 고딕", Font.PLAIN, 11);
-				
-				String starSub = "별 헤는 밤\n\n";
-				String starPoet = "계절이 지나가는 하늘에는 \n"
-						+ "가을로 가득 차 있습니다.\n\n"
-						+ "나는 아무 걱정도 없이\n 가을 속의 별들을 다 헤일 듯합니다.\n\n"
-						+ "가슴 속에 하나 둘 새겨지는 별을\n이제 다 못 헤는 것은\n"
-						+ "쉬이 아침이 오는 까닭이요,\n내일 밤이 남은 까닭이요,\n"
-						+ "아직 나의 청춘이 다하지 않은 까닭입니다.\n\n"
-						+ "별 하나에 추억과\n별 하나에 사랑과\n별 하나에 쓸쓸함과\n"
-						+ "별 하나에 동경과\n별 하나에 시와\n별 하나에 어머니, 어머니,\n\n"
-						+ "어머님, 나는 별 하나에 아름다운 말 한마디씩 불러봅니다.\n"
-						+ "…\n\n"
-						+ "이네들은 너무나 멀리 있습니다.\n별이 아슬히 멀 듯이,\n\n"
-						+ "어머님,\n그리고 당신은 멀리 북간도에 계십니다.\n\n"
-						+ "나는 무엇인지 그리워\n이 많은 별빛이 나린 언덕 위에\n"
-						+ "내 이름자를 써보고,\n흙으로 덮어 버리었습니다.\n\n"
-						+ "딴은 밤을 새워 우는 벌레는\n부끄러운 이름을 슬퍼하는 까닭입니다.\n\n"
-						+ "그러나 겨울이 지나고 나의 별에도 봄이 오면\n무덤 위에 파란 잔디가 피어나듯이\n"
-						+ "내 이름자 묻힌 언덕 위에도\n자랑처럼 풀이 무성할 게외다.";
-				starryNight.setForeground(Color.black);
-				starryNight.append(starSub);
-				starryNight.append(starPoet);
-				starryNight.setFont(poetFont);
-				
-				starry.add(starryNight);
-				starry.setVisible(true);
+				// 문제 1 출력 : 정답이면 정답 카운트 passCnt 1 증가
+//				JOptionPane.showMessageDialog(background, "오후 1시에 뜨는 별은 몇 개일까?");
+				StarCount stars = new StarCount();
+				if(stars.trueAnswer()) {
+					passCnt++;
+				}
 			}
 		});
 		
 
-		//  문제 1 힌트 : 액자(하늘 바람 별)
+		//  문제 1 힌트 : 액자(하늘 바람 별) : 시 이미지 출력
 		ImageIcon hintFrame = new ImageIcon("img/hintFrame.png");
 		JButton poetBtn = new JButton(hintFrame);
-		poetBtn.setBounds(950, 328, hintFrame.getIconWidth(), hintFrame.getIconHeight());
+		poetBtn.setBounds(970, 320, hintFrame.getIconWidth(), hintFrame.getIconHeight());
 		poetBtn.setBorderPainted(false);
+		poetBtn.addMouseListener(new OnOffMouse());
 		poetBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JFrame hintPoet = new JFrame("시");
-				hintPoet.setBounds(300, 30, 450, 850);
-//				JTextArea starryNight = new JTextArea(10, 30);
-//				starryNight.setEditable(false);
+				PoetHint poet = new PoetHint();
+				poet.setTitle("별 헤는 밤");
+				poet.setLocation(300, 130);
+				poet.setSize(798, 532);
+				poet.setResizable(false);
+				poet.setIconImage(new ImageIcon("img/favicon.jpg").getImage());
+				poet.setVisible(true);
 			}
 		});
 		
@@ -125,6 +117,7 @@ public class BreakLibrary extends JFrame {
 		JButton bookBtn = new JButton(book);
 		bookBtn.setBounds(73, 300, book.getIconWidth(), book.getIconHeight());
 		bookBtn.setBorderPainted(false);
+		bookBtn.addMouseListener(new OnOffMouse());
 
 		
 		// 이벤트 1 : 힌트 곰돌이 버튼
@@ -132,6 +125,7 @@ public class BreakLibrary extends JFrame {
 		JButton hintBtn = new JButton(hintBear);
 		hintBtn.setBounds(1123, 502, hintBear.getIconWidth(), hintBear.getIconHeight());
 		hintBtn.setBorderPainted(false);
+		hintBtn.addMouseListener(new OnOffMouse());
 		hintBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -178,6 +172,7 @@ public class BreakLibrary extends JFrame {
 		JButton mirrorBtn = new JButton(mirror);
 		mirrorBtn.setBounds(426, 281, mirror.getIconWidth(), mirror.getIconHeight());
 		mirrorBtn.setBorderPainted(false);
+		mirrorBtn.addMouseListener(new OnOffMouse());
 		
 		
 		// 버튼 프레임에 추가
@@ -198,7 +193,7 @@ public class BreakLibrary extends JFrame {
 			clip.open(ais);
 			FloatControl gainControl = 
 				    (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-				gainControl.setValue(-10.0f);
+//				gainControl.setValue(-1	0.0f);
 			clip.start();
 			if(loop) {
 				clip.loop(-1);
@@ -206,6 +201,49 @@ public class BreakLibrary extends JFrame {
 			
 		} catch(Exception e) {
 			e.printStackTrace();
+		}
+	}
+	
+	
+	// 마우스 온-오프 커서 바꾸기
+	public class OnOffMouse implements MouseListener {
+		
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// 버튼 마우스 오프 : 커서 원래대로 돌아오기
+			Toolkit tk = Toolkit.getDefaultToolkit();
+			mouseImg = new ImageIcon("img/cursor.png").getImage();
+			Point point = new Point(0, 0);
+			mouse = tk.createCustomCursor(mouseImg, point, "wonder");
+			setCursor(mouse);
+		}
+		
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// 버튼 마우스 온 : 커서 변경
+			Toolkit tk = Toolkit.getDefaultToolkit();
+			mouseImg = new ImageIcon("img/check.png").getImage();
+			Point point = new Point(20, 20);
+			mouse = tk.createCustomCursor(mouseImg, point, "find");
+			setCursor(mouse);
+		}
+		
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 }
