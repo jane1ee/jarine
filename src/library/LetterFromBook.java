@@ -26,7 +26,7 @@ public class LetterFromBook extends JFrame {
 	// 문제 발견, 문제 이미지
 	Image eventImg, bookImg;
 	// 편지이미지와 버튼
-	Image letterImg;
+	ImageIcon letterImg;
 	JButton letterBtn;
 	// 답 입력 텍스트 필드
 	JTextField letterField;
@@ -34,13 +34,13 @@ public class LetterFromBook extends JFrame {
 	Image mouseImg;
 	Cursor mouse;
 	// 정답 결과 리턴 필드
-	int starry;
+	boolean starry;
 	
 	public LetterFromBook() {
 		// null layout
 		setLayout(null);
 		
-		// 문제1 발견 팝업
+		// 문제2 발견 팝업
 		event = new JFrame();
 		// 위치, 크기 설정
 		event.setBounds(650, 510, 542, 81);
@@ -57,7 +57,7 @@ public class LetterFromBook extends JFrame {
 		// 출력
 		event.setVisible(true);
 		// 시간 제한 쓰레드
-		new LetterThread().start();
+		new BookThread().start();
 
 		
 		// 마우스 커서
@@ -84,10 +84,20 @@ public class LetterFromBook extends JFrame {
 		
 		
 		// 편지 버튼
-		letterImg = new ImageIcon("img/letter.png").getImage().getScaledInstance(197, 323, 0);
-		letterBtn = new JButton(new ImageIcon(letterImg));
-		letterBtn.setBounds(180, 150, 168, 285);
+		letterImg = new ImageIcon("img/letter.png");
+		letterBtn = new JButton(letterImg);
+		letterBtn.setBounds(190, 125, 190, 316);
 		letterBtn.setBorderPainted(false);
+		letterBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// 문제 2 출력
+				Letter letter = new Letter();
+				if(letter.trueAnswer()) {
+					starry = true;
+				}
+			}
+		});
 		book.add(letterBtn);
 		
 		
@@ -128,7 +138,7 @@ public class LetterFromBook extends JFrame {
 
 	
 
-	class LetterThread extends Thread {
+	class BookThread extends Thread {
 		@Override
 		public void run() {
 			try {
@@ -145,8 +155,8 @@ public class LetterFromBook extends JFrame {
 	
 	
 	// BreakLibrary에 값을 리턴
-	public int trueAnswer() {
-		starry = 1;
+	public boolean trueAnswer() {
+		
 		return starry;
 	}
 	

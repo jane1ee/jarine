@@ -116,7 +116,12 @@ public class BreakLibrary extends JFrame {
 		bookBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				// 문제 2 출력
 				LetterFromBook lfb =  new LetterFromBook();
+				//정답이면 정답 카운트 passCnt 1 증가
+				if(lfb.trueAnswer()) {
+					++passCnt;
+				}
 			}
 		});
 
