@@ -166,6 +166,7 @@ public class StarCount extends JFrame {
 			try {
 				Thread.sleep(3000);  // milliseconds
 				// 정답이면 3초 뒤 창 닫기
+				
 				star.setVisible(false);
 			} catch (InterruptedException e) {
 				e.printStackTrace();

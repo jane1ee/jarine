@@ -84,7 +84,7 @@ public class BreakLibrary extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// 문제 1 출력
-				StarCount starCnt = new StarCount();
+				StarCount starCnt = new StarCount(boolean );
 				//정답이면 정답 카운트 passCnt 1 증가
 				if(starCnt.trueAnswer()) {
 					++passCnt;
