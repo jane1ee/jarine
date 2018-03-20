@@ -30,10 +30,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 
 public class BreakLibrary extends JFrame {
-	// 필드 : 배경
+	// 배경
 	JScrollPane scrollPane;
 	Image bgImg;
-	// 필드 : 마우스
+	// 마우스
 	Image mouseImg;
 	Cursor mouse;
 	// 힌트 카운트
@@ -44,6 +44,7 @@ public class BreakLibrary extends JFrame {
 	public BreakLibrary() {
 		// 마우스 커서
 		Toolkit tk = Toolkit.getDefaultToolkit();
+		// 이미지 설정
 		mouseImg = new ImageIcon("img/cursor.png").getImage();
 		Point point = new Point(0, 0);
 		mouse = tk.createCustomCursor(mouseImg, point, "wonder");
@@ -54,6 +55,7 @@ public class BreakLibrary extends JFrame {
 		bgImg = new ImageIcon("img/library.png").getImage();
 		JPanel background = new JPanel() {
 			public void paintComponent(Graphics g) {
+				// 이미지 사이즈 가져오기
 				Dimension sizing = getSize();
 				g.drawImage(bgImg, 0, 0, (int)sizing.getWidth(), (int)sizing.getHeight(), null);
 				setOpaque(false);
@@ -72,7 +74,7 @@ public class BreakLibrary extends JFrame {
 		background.setLayout(null);
 		
 		
-		//  문제 1 : 액자(별) 버튼 이미지, 버튼, 위치, 경계선 해제, 이벤트
+		//  문제 1 : 액자(별) 버튼 이미지 // 버튼 // 위치 // 경계선 해제 // 이벤트
 		ImageIcon mdFrame = new ImageIcon("img/frame.png");
 		JButton frameBtn = new JButton(mdFrame);
 		frameBtn.setBounds(918, 228, mdFrame.getIconWidth(), mdFrame.getIconHeight());
@@ -81,16 +83,15 @@ public class BreakLibrary extends JFrame {
 		frameBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// 문제 1 출력 : 정답이면 정답 카운트 passCnt 1 증가
-//				JOptionPane.showMessageDialog(background, "오후 1시에 뜨는 별은 몇 개일까?");
-				StarCount stars = new StarCount();
-				if(stars.trueAnswer()) {
-					passCnt++;
+				// 문제 1 출력
+				StarCount starCnt = new StarCount();
+				//정답이면 정답 카운트 passCnt 1 증가
+				if(starCnt.trueAnswer()) {
+					++passCnt;
 				}
 			}
 		});
 		
-
 		//  문제 1 힌트 : 액자(하늘 바람 별) : 시 이미지 출력
 		ImageIcon hintFrame = new ImageIcon("img/hintFrame.png");
 		JButton poetBtn = new JButton(hintFrame);
@@ -100,11 +101,7 @@ public class BreakLibrary extends JFrame {
 		poetBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Clue1Popup clue = new Clue1Popup();
-				clue.setLocation(750, 500);
-				clue.setSize(542, 80);
-				clue.setResizable(false);
-				clue.setVisible(true);
+				ClueFrame clue = new ClueFrame();
 			}
 		});
 		
@@ -113,10 +110,17 @@ public class BreakLibrary extends JFrame {
 		//  문제 2 :책
 		ImageIcon book = new ImageIcon("img/book.png");
 		JButton bookBtn = new JButton(book);
-		bookBtn.setBounds(73, 300, book.getIconWidth(), book.getIconHeight());
+		bookBtn.setBounds(73, 312, book.getIconWidth(), book.getIconHeight());
 		bookBtn.setBorderPainted(false);
 		bookBtn.addMouseListener(new OnOffMouse());
+		bookBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				LetterFromBook lfb =  new LetterFromBook();
+			}
+		});
 
+		
 		
 		// 이벤트 1 : 힌트 곰돌이 버튼
 		ImageIcon hintBear = new ImageIcon("img/hintBear.PNG");
@@ -135,7 +139,8 @@ public class BreakLibrary extends JFrame {
 							JOptionPane.showMessageDialog(background, "힌트를 사용합니다. 남은 힌트는 " + (3 - hintCnt) + "개 입니다.");
 							int hint1 = JOptionPane.showConfirmDialog(background, "책장의 문제입니까?");
 							if (hint1 == 0) {
-								JOptionPane.showMessageDialog(background, "힌트힌트1");
+								JOptionPane.showMessageDialog(background, "간단한 숫자 암호입니다.\n"
+										+ "순서대로 알파벳을 써보세요.");
 								break;
 							} else if (hint1 == 1) {
 								int hint2 = JOptionPane.showConfirmDialog(background, "액자의 문제입니까?");

@@ -25,7 +25,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import library.BreakLibrary.OnOffMouse;
 
 public class LightOff extends JFrame {
 	JScrollPane scrollPane;
@@ -60,19 +59,24 @@ public class LightOff extends JFrame {
 	
 	public LightOff() {
 		// 마우스 커서
-				Toolkit tk = Toolkit.getDefaultToolkit();
-				mouseImg = new ImageIcon("img/cursor.png").getImage();
-				Point point = new Point(0, 0);
-				mouse = tk.createCustomCursor(mouseImg, point, "wonder");
-				setCursor(mouse);
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		mouseImg = new ImageIcon("img/cursor.png").getImage();
+		Point point = new Point(0, 0);
+		mouse = tk.createCustomCursor(mouseImg, point, "wonder");
+		setCursor(mouse);
+		
 		// 처음 : 불 꺼진 배경화면
 		Image bgImg = new ImageIcon("img/lightoff.PNG").getImage();
 		
 		JPanel background = new JPanel() {
 			public void paintComponent(Graphics g) {
+				// 사이즈 가져오기
 				Dimension sizing = getSize();
+				// 이미지, 위치, 사이즈
 				g.drawImage(bgImg, 0, 0, (int)sizing.getWidth(), (int)sizing.getHeight(), null);
+				// 투명하게? : 아니
 				setOpaque(false);
+				// 배경 그리기
 				super.paintComponent(g);
 			}
 		};
@@ -90,7 +94,7 @@ public class LightOff extends JFrame {
 		
 		
 		// 텍스트 에어리어 이벤트 : 스위치 버튼 클릭 유도
-		storyConsol.setBounds(280, 485, 742, 232);
+		storyConsol.setBounds(280, 480, 742, 232);
 		TextAction textClick = new TextAction();
 		storyConsol.addMouseListener(textClick);
 		storyConsol.setEditable(false);
