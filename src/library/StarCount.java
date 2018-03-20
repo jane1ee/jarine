@@ -90,7 +90,7 @@ public class StarCount extends JFrame {
 				if(inputStar.equals("13")) {
 					starField.setText("정답입니다.");
 					starField.setEditable(false);
-					trueAnswer();
+					stars = true;
 					new CloseThread().start();
 				} else {
 					starField.setText("다시 생각해보세요.");
@@ -99,6 +99,7 @@ public class StarCount extends JFrame {
 		});
 		
 		star.add(starField);
+		
 		
 		// 진입하면 마우스 커서 변경
 		star.addMouseListener(new MouseListener() {
@@ -155,7 +156,6 @@ public class StarCount extends JFrame {
 	
 	// BreakLibrary에 값을 리턴
 	public boolean trueAnswer() {
-		stars = true;
 		return stars;
 	}
 	

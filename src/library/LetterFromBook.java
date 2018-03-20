@@ -22,14 +22,9 @@ public class LetterFromBook extends JFrame {
 	// JFrame
 	JFrame event, book, letter;
 	// JLabel
-	JLabel eventLabel, bookLabel, letterLabel;
+	JLabel eventLabel, bookLabell;
 	// 문제 발견, 문제 이미지
 	Image eventImg, bookImg;
-	// 편지이미지와 버튼
-	ImageIcon letterImg;
-	JButton letterBtn;
-	// 답 입력 텍스트 필드
-	JTextField letterField;
 	// 마우스
 	Image mouseImg;
 	Cursor mouse;
@@ -77,15 +72,15 @@ public class LetterFromBook extends JFrame {
 		// X창 없애기
 		book.setUndecorated(true);
 		// 이미지
-		bookLabel  = new JLabel();
+		JLabel bookLabel  = new JLabel();
 		bookImg = new ImageIcon("img/blankBook.png").getImage();
 		bookLabel.setIcon(new ImageIcon(bookImg));
 		bookLabel.setLocation(-100, -200);
 		
 		
 		// 편지 버튼
-		letterImg = new ImageIcon("img/letter.png");
-		letterBtn = new JButton(letterImg);
+		ImageIcon letterImg = new ImageIcon("img/letter.png");
+		JButton letterBtn = new JButton(letterImg);
 		letterBtn.setBounds(190, 125, 190, 316);
 		letterBtn.setBorderPainted(false);
 		letterBtn.addActionListener(new ActionListener() {
@@ -94,11 +89,12 @@ public class LetterFromBook extends JFrame {
 				// 문제 2 출력
 				Letter letter = new Letter();
 				if(letter.trueAnswer()) {
-					starry = true;
+					if(starry) {
+						book.setVisible(false);
+					}
 				}
 			}
 		});
-		book.add(letterBtn);
 		
 		
 		// 진입하면 마우스 커서 변경
@@ -130,8 +126,10 @@ public class LetterFromBook extends JFrame {
 			}
 		});
 		
-
+		
+		book.add(letterBtn);
 		book.add(bookLabel);
+		
 		// X 버튼 없애기
 		setUndecorated(true);
 	}
@@ -156,22 +154,7 @@ public class LetterFromBook extends JFrame {
 	
 	// BreakLibrary에 값을 리턴
 	public boolean trueAnswer() {
-		
 		return starry;
 	}
 	
-	
-	class CloseThread extends Thread {
-		@Override
-		public void run() {
-			try {
-				Thread.sleep(3000);  // milliseconds
-				// 정답이면 3초 뒤 창 닫기
-				letter.setVisible(false);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
 }

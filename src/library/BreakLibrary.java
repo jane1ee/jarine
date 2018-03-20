@@ -88,6 +88,7 @@ public class BreakLibrary extends JFrame {
 				//정답이면 정답 카운트 passCnt 1 증가
 				if(starCnt.trueAnswer()) {
 					++passCnt;
+					System.out.println(passCnt);
 				}
 			}
 		});
@@ -121,6 +122,7 @@ public class BreakLibrary extends JFrame {
 				//정답이면 정답 카운트 passCnt 1 증가
 				if(lfb.trueAnswer()) {
 					++passCnt;
+					System.out.println(passCnt);
 				}
 			}
 		});
