@@ -69,7 +69,7 @@ public class StarCount extends JFrame {
 
 		// 정답 입력
 		starField = new JTextField();
-		starField.setBounds(260, 335, 90, 30);
+		starField.setBounds(230, 335, 150, 30);
 		starField.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

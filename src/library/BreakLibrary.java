@@ -115,24 +115,28 @@ public class BreakLibrary extends JFrame {
 		bookBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// 문제 발견 팝업
-				event = new JFrame();
-				// 위치, 크기 설정
-				event.setBounds(650, 510, 542, 81);
-				// 창 크기 조절 : 불가능
-				event.setResizable(false);
-				// X창 없애기
-				event.setUndecorated(true);
-				// 이미지
-				eventLabel  = new JLabel();
-				eventImg = new ImageIcon("img/event.png").getImage();
-				eventLabel.setIcon(new ImageIcon(eventImg));
-				eventLabel.setLocation(0, 0);
-				event.add(eventLabel);
-				// 출력
-				event.setVisible(true);
-				// 팝업 종료, 문제 출력
-				new LetterThread().start();
+				if(passCnt == 0) {
+					// 문제 발견 팝업
+					event = new JFrame();
+					// 위치, 크기 설정
+					event.setBounds(650, 510, 542, 81);
+					// 창 크기 조절 : 불가능
+					event.setResizable(false);
+					// X창 없애기
+					event.setUndecorated(true);
+					// 이미지
+					eventLabel  = new JLabel();
+					eventImg = new ImageIcon("img/event.png").getImage();
+					eventLabel.setIcon(new ImageIcon(eventImg));
+					eventLabel.setLocation(0, 0);
+					event.add(eventLabel);
+					// 출력
+					event.setVisible(true);
+					// 팝업 종료, 문제 출력
+					new LetterThread().start();
+				} else {
+					JOptionPane.showMessageDialog(background, "저기 걸려 있는 그림은 무슨 그림이지?");
+				}
 			}
 		});
 
@@ -147,7 +151,9 @@ public class BreakLibrary extends JFrame {
 		starBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(passCnt == 1) {
+				if(passCnt == 0) {
+					JOptionPane.showMessageDialog(background, "편지를 먼저 찾아야 해.");
+				} else if(passCnt == 1) {
 					// 문제 발견 팝업
 					event = new JFrame();
 					// 위치, 크기 설정
@@ -167,7 +173,7 @@ public class BreakLibrary extends JFrame {
 					// 팝업 제거, 문제 팝업 출력
 					new StarThread().start();
 				} else {
-					JOptionPane.showMessageDialog(background, "편지를 먼저 찾아야 해.");
+					JOptionPane.showMessageDialog(background, "거울이 좀 수상한데…….");
 				}
 			}
 		});

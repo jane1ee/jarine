@@ -76,7 +76,40 @@ public class Letter extends JFrame {
 				new StarryThread().start();
 			}
 		});
-		letterBtn.addMouseListener(new OnOffMouse());
+		letterBtn.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// 버튼 마우스 오프 : 커서 원래대로 돌아오기
+				tk = Toolkit.getDefaultToolkit();
+				mouseImg = new ImageIcon("img/cursor.png").getImage();
+				point = new Point(0, 0);
+				mouse = tk.createCustomCursor(mouseImg, point, "wonder");
+				book.setCursor(mouse);
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// 버튼 마우스 온 : 커서 변경
+				tk = Toolkit.getDefaultToolkit();
+				mouseImg = new ImageIcon("img/check.png").getImage();
+				point = new Point(20, 20);
+				mouse = tk.createCustomCursor(mouseImg, point, "find");
+				book.setCursor(mouse);
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				dispose();
+			}
+		});
 		
 		
 		book.add(letterBtn);
@@ -104,7 +137,7 @@ public class Letter extends JFrame {
 		
 		// 정답 입력
 		letterField = new JTextField();
-		letterField.setBounds(300, 290, 90, 30);
+		letterField.setBounds(265, 285, 150, 30);
 		letterField.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -138,46 +171,6 @@ public class Letter extends JFrame {
 	}
 	
 	
-	// 마우스 온-오프 커서 바꾸기
-	public class OnOffMouse implements MouseListener {
-		
-		@Override
-		public void mouseReleased(MouseEvent e) {
-		}
-		
-		@Override
-		public void mousePressed(MouseEvent e) {
-		}
-		
-		@Override
-		public void mouseExited(MouseEvent e) {
-			// 버튼 마우스 오프 : 커서 원래대로 돌아오기
-			mouseImg = new ImageIcon("img/cursor.png").getImage();
-			point = new Point(0, 0);
-			mouse = tk.createCustomCursor(mouseImg, point, "wonder");
-			book.setCursor(mouse);
-			letter.setCursor(mouse);
-		}
-		
-		@Override
-		public void mouseEntered(MouseEvent e) {
-			// 버튼 마우스 온 : 커서 변경
-			mouseImg = new ImageIcon("img/check.png").getImage();
-			point = new Point(20, 20);
-			mouse = tk.createCustomCursor(mouseImg, point, "find");
-			book.setCursor(mouse);
-			letter.setCursor(mouse);
-		}
-		
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			dispose();
-		}
-	}
-
-
-
-
 	class StarryThread extends Thread {
 		@Override
 		public void run() {
