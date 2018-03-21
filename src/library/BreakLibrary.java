@@ -30,6 +30,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 
+
 public class BreakLibrary extends JFrame {
 	// 배경
 	JScrollPane scrollPane;
@@ -38,13 +39,29 @@ public class BreakLibrary extends JFrame {
 	// 마우스
 	Image mouseImg;
 	Cursor mouse;
-	//  단서 
+	// 문제1 : starry starry night  숫자 암호 : 답) starry
+	ImageIcon book;
+	JButton bookBtn;
+	// 문제2 : 별 헤는 밤에는 별이 몇 개 나올까?(제목포함)
+	ImageIcon starFrame;
+	JButton starBtn;
+	// 문제2 힌트
+	ImageIcon starHint;
+	JButton starPoetBtn;
+	// 문제 발견 팝업
+	JFrame event;
+	JLabel eventLabel;
+	Image eventImg;
+	//  단서  발견 팝업
 	JFrame clue;
 	JLabel clueLabel;
 	Image clueImg;
 	// 거울 버튼
-	JButton mirrorBtn;
 	ImageIcon mirror;
+	JButton mirrorBtn;
+	// 힌트 곰돌이
+	ImageIcon hintBear;
+	JButton hintBtn;
 	// 힌트 카운트
 	int hintCnt = 0;
 	// 거울 클릭 카운트 : 12번 누르면 버튼 사라지고 깨짐
@@ -86,28 +103,62 @@ public class BreakLibrary extends JFrame {
 		background.setLayout(null);
 		
 		
-		//  문제 1 : 액자(별) 버튼 이미지 // 버튼 // 위치 // 경계선 해제 // 이벤트
-		ImageIcon mdFrame = new ImageIcon("img/frame.png");
-		JButton frameBtn = new JButton(mdFrame);
-		frameBtn.setBounds(918, 228, mdFrame.getIconWidth(), mdFrame.getIconHeight());
-		frameBtn.setBorderPainted(false);
-		frameBtn.addMouseListener(new OnOffMouse());
-		frameBtn.addActionListener(new ActionListener() {
+		
+		
+		//  문제 1 :책
+		book = new ImageIcon("img/book.png");
+		bookBtn = new JButton(book);
+		bookBtn.setBounds(73, 312, book.getIconWidth(), book.getIconHeight());
+		bookBtn.setBorderPainted(false);
+		bookBtn.addMouseListener(new OnOffMouse());
+		bookBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// 문제 1 출력
+				// 문제 발견 팝업
+				event = new JFrame();
+				// 위치, 크기 설정
+				event.setBounds(650, 510, 542, 81);
+				// 창 크기 조절 : 불가능
+				event.setResizable(false);
+				// X창 없애기
+				event.setUndecorated(true);
+				// 이미지
+				eventLabel  = new JLabel();
+				eventImg = new ImageIcon("img/event.png").getImage();
+				eventLabel.setIcon(new ImageIcon(eventImg));
+				eventLabel.setLocation(0, 0);
+				event.add(eventLabel);
+				// 출력
+				event.setVisible(true);
+				// 시간 제한 쓰레드
+				new BookThread().start();
+			}
+		});
+
+		
+		
+		//  문제 2 : 액자(별이 빛나는 밤) 클릭시 출력
+		 starFrame = new ImageIcon("img/frame.png");
+		starBtn = new JButton(starFrame);
+		starBtn.setBounds(918, 228, starFrame.getIconWidth(), starFrame.getIconHeight());
+		starBtn.setBorderPainted(false);
+		starBtn.addMouseListener(new OnOffMouse());
+		starBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// 문제 출력
 				StarCount starCnt = new StarCount();
-				//정답이면 정답 카운트 passCnt 1 증가
+
 			}
 		});
 		
-		//  문제 1 힌트 : 액자(하늘 바람 별) : 시 이미지 출력
-		ImageIcon hintFrame = new ImageIcon("img/hintFrame.png");
-		JButton poetBtn = new JButton(hintFrame);
-		poetBtn.setBounds(970, 320, hintFrame.getIconWidth(), hintFrame.getIconHeight());
-		poetBtn.setBorderPainted(false);
-		poetBtn.addMouseListener(new OnOffMouse());
-		poetBtn.addActionListener(new ActionListener() {
+		//  문제 2 힌트 : 액자(하늘 바람 별) : 시 이미지 출력
+		starHint = new ImageIcon("img/hintFrame.png");
+		starPoetBtn = new JButton(starHint);
+		starPoetBtn.setBounds(970, 320, starHint.getIconWidth(), starHint.getIconHeight());
+		starPoetBtn.setBorderPainted(false);
+		starPoetBtn.addMouseListener(new OnOffMouse());
+		starPoetBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// 힌트 발견 팝업 : 배경화면
@@ -134,25 +185,9 @@ public class BreakLibrary extends JFrame {
 		
 		
 		
-		//  문제 2 :책
-		ImageIcon book = new ImageIcon("img/book.png");
-		JButton bookBtn = new JButton(book);
-		bookBtn.setBounds(73, 312, book.getIconWidth(), book.getIconHeight());
-		bookBtn.setBorderPainted(false);
-		bookBtn.addMouseListener(new OnOffMouse());
-		bookBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// 문제 2 출력
-				LetterFromBook lfb =  new LetterFromBook();
-			}
-		});
-
-		
-		
 		// 이벤트 1 : 힌트 곰돌이 버튼
-		ImageIcon hintBear = new ImageIcon("img/hintBear.PNG");
-		JButton hintBtn = new JButton(hintBear);
+		hintBear = new ImageIcon("img/hintBear.PNG");
+		hintBtn = new JButton(hintBear);
 		hintBtn.setBounds(1123, 502, hintBear.getIconWidth(), hintBear.getIconHeight());
 		hintBtn.setBorderPainted(false);
 		hintBtn.addMouseListener(new OnOffMouse());
@@ -242,11 +277,11 @@ public class BreakLibrary extends JFrame {
 		
 		
 		// 버튼 프레임에 추가
-		background.add(hintBtn);
-		background.add(frameBtn);
-		background.add(poetBtn);
-		background.add(mirrorBtn);
 		background.add(bookBtn);
+		background.add(starBtn);
+		background.add(starPoetBtn);
+		background.add(mirrorBtn);
+		background.add(hintBtn);
 	}
 
 	
@@ -312,6 +347,23 @@ public class BreakLibrary extends JFrame {
 			
 		}
 	}
+
+	
+
+	class BookThread extends Thread {
+		@Override
+		public void run() {
+			try {
+				Thread.sleep(1000);  // milliseconds
+				// 1초 뒤 발견문구 사라짐
+				event.setVisible(false);
+				// 문제 출력
+				LetterFromBook lfb = new LetterFromBook();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	
 
 	class PoetThread extends Thread {
@@ -336,7 +388,7 @@ public class BreakLibrary extends JFrame {
 			try {
 				Thread.sleep(1000);  // milliseconds
 				// 1초 뒤 단서 발견 창 사라짐
-				mirrorBtn.setVisible(false);
+				clue.setVisible(false);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

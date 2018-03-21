@@ -20,11 +20,11 @@ import library.StarCount.StarThread;
 
 public class LetterFromBook extends JFrame {
 	// JFrame
-	JFrame event, book, letter;
+	JFrame book, letter;
 	// JLabel
-	JLabel eventLabel, bookLabell;
+	JLabel bookLabell;
 	// 문제 발견, 문제 이미지
-	Image eventImg, bookImg;
+	Image bookImg;
 	// 마우스
 	Image mouseImg;
 	Cursor mouse;
@@ -35,32 +35,13 @@ public class LetterFromBook extends JFrame {
 		// null layout
 		setLayout(null);
 		
-		// 문제2 발견 팝업
-		event = new JFrame();
-		// 위치, 크기 설정
-		event.setBounds(650, 510, 542, 81);
-		// 창 크기 조절 : 불가능
-		event.setResizable(false);
-		// X창 없애기
-		event.setUndecorated(true);
-		// 이미지
-		eventLabel  = new JLabel();
-		eventImg = new ImageIcon("img/event.png").getImage();
-		eventLabel.setIcon(new ImageIcon(eventImg));
-		eventLabel.setLocation(0, 0);
-		event.add(eventLabel);
-		// 출력
-		event.setVisible(true);
-		// 시간 제한 쓰레드
-		new BookThread().start();
-
 		
 		// 마우스 커서
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		mouseImg = new ImageIcon("img/cursor.png").getImage();
 		Point point = new Point(0, 0);
 		mouse = tk.createCustomCursor(mouseImg, point, "wonder");
-		event.setCursor(mouse);
+		setCursor(mouse);
 		
 		
 		// 문제2 : 책 배경
@@ -128,25 +109,9 @@ public class LetterFromBook extends JFrame {
 		
 		// X 버튼 없애기
 		setUndecorated(true);
+		book.setVisible(true);
 	}
-
 	
-
-	class BookThread extends Thread {
-		@Override
-		public void run() {
-			try {
-				Thread.sleep(1000);  // milliseconds
-				// 1초 뒤 발견문구 사라짐
-				event.setVisible(false);
-				// 문제 출력
-				book.setVisible(true);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
 	
 	
 	class CloseThread extends Thread {
