@@ -15,7 +15,6 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import library.StarCount.CloseThread;
-import library.StarCount.StarThread;
 
 public class Letter extends JFrame {
 	// JFrame

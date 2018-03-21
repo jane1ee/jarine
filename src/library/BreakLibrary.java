@@ -52,7 +52,7 @@ public class BreakLibrary extends JFrame {
 	JFrame event;
 	JLabel eventLabel;
 	Image eventImg;
-	//  단서  발견 팝업
+	// 단서 발견 팝업
 	JFrame clue;
 	JLabel clueLabel;
 	Image clueImg;
@@ -67,7 +67,7 @@ public class BreakLibrary extends JFrame {
 	// 거울 클릭 카운트 : 12번 누르면 버튼 사라지고 깨짐
 	int mirrorCnt = 0;
 //	// 정답 카운트 : passCnt = 3이면 Library 탈출
-//	int passCnt = 0;
+	int passCnt = 0;
 	
 	
 	public BreakLibrary() {
@@ -130,7 +130,7 @@ public class BreakLibrary extends JFrame {
 				event.add(eventLabel);
 				// 출력
 				event.setVisible(true);
-				// 시간 제한 쓰레드
+				// 팝업 종료, 문제 출력
 				new BookThread().start();
 			}
 		});
@@ -138,7 +138,7 @@ public class BreakLibrary extends JFrame {
 		
 		
 		//  문제 2 : 액자(별이 빛나는 밤) 클릭시 출력
-		 starFrame = new ImageIcon("img/frame.png");
+		starFrame = new ImageIcon("img/frame.png");
 		starBtn = new JButton(starFrame);
 		starBtn.setBounds(918, 228, starFrame.getIconWidth(), starFrame.getIconHeight());
 		starBtn.setBorderPainted(false);
@@ -146,9 +146,28 @@ public class BreakLibrary extends JFrame {
 		starBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// 문제 출력
-				StarCount starCnt = new StarCount();
-
+//				if(passCnt == 1) {
+					// 문제 발견 팝업
+					event = new JFrame();
+					// 위치, 크기 설정
+					event.setBounds(650, 510, 542, 81);
+					// 창 크기 조절 : 불가능
+					event.setResizable(false);
+					// X창 없애기
+					event.setUndecorated(true);
+					// 이미지
+					eventLabel  = new JLabel();
+					eventImg = new ImageIcon("img/event.png").getImage();
+					eventLabel.setIcon(new ImageIcon(eventImg));
+					eventLabel.setLocation(0, 0);
+					event.add(eventLabel);
+					// 출력
+					event.setVisible(true);
+					// 팝업 제거, 문제 팝업 출력
+					new StarThread().start();
+//				} else {
+//					JOptionPane.showMessageDialog(background, "책장의 문제를 먼저 푸세요.");
+//				}
 			}
 		});
 		
@@ -345,7 +364,7 @@ public class BreakLibrary extends JFrame {
 	}
 
 	
-
+	// 문제 1 쓰레드
 	class BookThread extends Thread {
 		@Override
 		public void run() {
@@ -360,8 +379,34 @@ public class BreakLibrary extends JFrame {
 			}
 		}
 	}
+
+	
+	// 문제 2 쓰레드
+	class StarThread extends Thread {
+		@Override
+		public void run() {
+			try {
+				Thread.sleep(1000);  // milliseconds
+				// 1초 뒤 발견문구 사라짐
+				event.setVisible(false);
+				// 문제 출력
+				StarCount starCount = new StarCount(this);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		public void method(boolean starFlag){
+			if(starFlag){
+				passCnt++;
+			} else {
+				
+			}
+		}
+	}
 	
 
+	// 문제 2 힌트 쓰레드
 	class PoetThread extends Thread {
 		@Override
 		public void run() {
@@ -378,6 +423,7 @@ public class BreakLibrary extends JFrame {
 	}
 	
 
+	// 이벤트 2 힌트 쓰레드
 	class MirrorThread extends Thread {
 		@Override
 		public void run() {
