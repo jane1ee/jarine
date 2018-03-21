@@ -30,18 +30,16 @@ public class StarCount extends JFrame {
 	Image starImg;
 	// 답 입력 텍스트 필드
 	JTextField starField;
-	// 정답 제출 버튼
-	JButton starryBtn;
 	// 마우스
 	Image mouseImg;
 	Cursor mouse;
-	
-	StarThread starsCnt;
+	// 쓰레드로 정답 넘기기
+	StarThread starFlag;
 
 
-	public StarCount(StarThread starsCnt){
+	public StarCount(StarThread starFlag){
 		this();
-		this.starsCnt = starsCnt;
+		this.starFlag = starFlag;
 	}
 	
 	public StarCount() {
@@ -71,10 +69,8 @@ public class StarCount extends JFrame {
 
 		// 정답 입력
 		starField = new JTextField();
-		starField.setBounds(240, 335, 100, 30);
-		starryBtn = new JButton("개");
-		starryBtn.setBounds(340, 335, 50, 29);
-		starryBtn.addActionListener(new ActionListener() {
+		starField.setBounds(260, 335, 90, 30);
+		starField.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String inputStar = starField.getText();
@@ -82,16 +78,15 @@ public class StarCount extends JFrame {
 					starField.setText("정답입니다.");
 					starField.setEditable(false);
 					new CloseThread().start();
-					starsCnt.method(true);
+					starFlag.starMethod(true);
 					
 				} else {
-					starsCnt.method(false);
+					starFlag.starMethod(false);
 					starField.setText("다시 생각해보세요.");
 				}
 			}
 		});
 		
-		star.add(starryBtn);
 		star.add(starField);
 
 		// 진입하면 마우스 커서 변경
@@ -136,9 +131,9 @@ public class StarCount extends JFrame {
 		@Override
 		public void run() {
 			try {
-				Thread.sleep(3000); // milliseconds
-				// 정답이면 3초 뒤 창 닫기
-				star.setVisible(false);
+				Thread.sleep(2000); // milliseconds
+				// 정답이면 2초 뒤 창 닫기
+				star.dispose();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

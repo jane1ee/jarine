@@ -27,6 +27,7 @@ import javax.swing.JTextArea;
 
 
 public class LightOff extends JFrame {
+	// 배경
 	JScrollPane scrollPane;
 	// textarea 배경
 	Image textboxBg = new ImageIcon("img/textbox.png").getImage();
@@ -54,15 +55,17 @@ public class LightOff extends JFrame {
 	// 스위치 클릭시 이벤트
 	int switchClick = 0;
 	// 마우스
+	Toolkit tk;
 	Image mouseImg;
 	Cursor mouse;
+	Point point;
 	
 	
 	public LightOff() {
 		// 마우스 커서
-		Toolkit tk = Toolkit.getDefaultToolkit();
+		tk = Toolkit.getDefaultToolkit();
 		mouseImg = new ImageIcon("img/cursor.png").getImage();
-		Point point = new Point(0, 0);
+		point = new Point(0, 0);
 		mouse = tk.createCustomCursor(mouseImg, point, "wonder");
 		setCursor(mouse);
 		
@@ -166,7 +169,6 @@ public class LightOff extends JFrame {
 	class SwitchAction implements MouseListener {
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			setVisible(false);
 			BreakLibrary breakLibrary = new BreakLibrary();
 			breakLibrary.setTitle("서재");
 			breakLibrary.setLocation(300, 130);
@@ -175,14 +177,15 @@ public class LightOff extends JFrame {
 			breakLibrary.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			breakLibrary.setIconImage(new ImageIcon("img/favicon.jpg").getImage());
 			breakLibrary.setVisible(true);
+			// 창닫기
+			dispose();
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
 			// 버튼 마우스 오프 : 커서 원래대로 돌아오기
-			Toolkit tk = Toolkit.getDefaultToolkit();
 			mouseImg = new ImageIcon("img/cursor.png").getImage();
-			Point point = new Point(0, 0);
+			point = new Point(0, 0);
 			mouse = tk.createCustomCursor(mouseImg, point, "wonder");
 			setCursor(mouse);
 		}
@@ -190,9 +193,8 @@ public class LightOff extends JFrame {
 		@Override
 		public void mouseEntered(MouseEvent e) {
 			// 버튼 마우스 온 : 커서 변경
-			Toolkit tk = Toolkit.getDefaultToolkit();
 			mouseImg = new ImageIcon("img/check.png").getImage();
-			Point point = new Point(20, 20);
+			point = new Point(20, 20);
 			mouse = tk.createCustomCursor(mouseImg, point, "find");
 			setCursor(mouse);
 		}

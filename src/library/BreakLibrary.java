@@ -37,8 +37,10 @@ public class BreakLibrary extends JFrame {
 	Image bgImg;
 	JPanel background;
 	// 마우스
+	Toolkit tk;
 	Image mouseImg;
 	Cursor mouse;
+	Point point;
 	// 문제1 : starry starry night  숫자 암호 : 답) starry
 	ImageIcon book;
 	JButton bookBtn;
@@ -72,10 +74,10 @@ public class BreakLibrary extends JFrame {
 	
 	public BreakLibrary() {
 		// 마우스 커서
-		Toolkit tk = Toolkit.getDefaultToolkit();
+		tk = Toolkit.getDefaultToolkit();
 		// 이미지 설정
 		mouseImg = new ImageIcon("img/cursor.png").getImage();
-		Point point = new Point(0, 0);
+		point = new Point(0, 0);
 		mouse = tk.createCustomCursor(mouseImg, point, "wonder");
 		setCursor(mouse);
 		
@@ -101,7 +103,6 @@ public class BreakLibrary extends JFrame {
 		
 		// 패널 레이아웃 설정
 		background.setLayout(null);
-		
 		
 		
 		
@@ -131,7 +132,7 @@ public class BreakLibrary extends JFrame {
 				// 출력
 				event.setVisible(true);
 				// 팝업 종료, 문제 출력
-				new BookThread().start();
+				new LetterThread().start();
 			}
 		});
 
@@ -146,7 +147,7 @@ public class BreakLibrary extends JFrame {
 		starBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-//				if(passCnt == 1) {
+				if(passCnt == 1) {
 					// 문제 발견 팝업
 					event = new JFrame();
 					// 위치, 크기 설정
@@ -165,9 +166,9 @@ public class BreakLibrary extends JFrame {
 					event.setVisible(true);
 					// 팝업 제거, 문제 팝업 출력
 					new StarThread().start();
-//				} else {
-//					JOptionPane.showMessageDialog(background, "책장의 문제를 먼저 푸세요.");
-//				}
+				} else {
+					JOptionPane.showMessageDialog(background, "편지를 먼저 찾아야 해.");
+				}
 			}
 		});
 		
@@ -194,10 +195,9 @@ public class BreakLibrary extends JFrame {
 				clueLabel.setIcon(new ImageIcon(clueImg));
 				clueLabel.setLocation(0, 0);
 				clue.add(clueLabel);
-				
-				// 보여지도록 하기
+				// 출력
 				clue.setVisible(true);
-				// 쓰레드 : 단서 문구 사라지고 힌트 출력
+				// 단서 팝업 제거, 힌트 출력
 				new PoetThread().start();
 			}
 		});
@@ -283,9 +283,8 @@ public class BreakLibrary extends JFrame {
 					
 					// 보여지도록 하기
 					clue.setVisible(true);
-					// 시간 제한 쓰레드
+					// 단서 팝업 종료, 깨진 거울 나타나기
 					new MirrorThread().start();
-					
 				}
 			}
 		});
@@ -326,22 +325,17 @@ public class BreakLibrary extends JFrame {
 		
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
 		}
 		
 		@Override
 		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
 		}
 		
 		@Override
 		public void mouseExited(MouseEvent e) {
 			// 버튼 마우스 오프 : 커서 원래대로 돌아오기
-			Toolkit tk = Toolkit.getDefaultToolkit();
 			mouseImg = new ImageIcon("img/cursor.png").getImage();
-			Point point = new Point(0, 0);
+			point = new Point(0, 0);
 			mouse = tk.createCustomCursor(mouseImg, point, "wonder");
 			setCursor(mouse);
 		}
@@ -349,58 +343,59 @@ public class BreakLibrary extends JFrame {
 		@Override
 		public void mouseEntered(MouseEvent e) {
 			// 버튼 마우스 온 : 커서 변경
-			Toolkit tk = Toolkit.getDefaultToolkit();
 			mouseImg = new ImageIcon("img/check.png").getImage();
-			Point point = new Point(20, 20);
+			point = new Point(20, 20);
 			mouse = tk.createCustomCursor(mouseImg, point, "find");
 			setCursor(mouse);
 		}
 		
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
 		}
 	}
 
 	
 	// 문제 1 쓰레드
-	class BookThread extends Thread {
+	class LetterThread extends Thread {
 		@Override
 		public void run() {
 			try {
 				Thread.sleep(1000);  // milliseconds
 				// 1초 뒤 발견문구 사라짐
-				event.setVisible(false);
+				event.dispose();
 				// 문제 출력
-				LetterFromBook lfb = new LetterFromBook();
+				Letter letter = new Letter(this);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
+			}
+		}
+
+		public void letterMethod (boolean letterFlag) {
+			if(letterFlag){
+				passCnt++;
 			}
 		}
 	}
 
 	
-	// 문제 2 쓰레드
+	// 문제 2 별문제 쓰레드
 	class StarThread extends Thread {
 		@Override
 		public void run() {
 			try {
 				Thread.sleep(1000);  // milliseconds
 				// 1초 뒤 발견문구 사라짐
-				event.setVisible(false);
+				event.dispose();
 				// 문제 출력
 				StarCount starCount = new StarCount(this);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
-		
-		public void method(boolean starFlag){
+
+		public void starMethod (boolean starFlag) {
 			if(starFlag){
 				passCnt++;
-			} else {
-				
 			}
 		}
 	}
@@ -413,7 +408,7 @@ public class BreakLibrary extends JFrame {
 			try {
 				Thread.sleep(1000);  // milliseconds
 				// 1초 뒤 단서 발견 창 사라짐
-				clue.setVisible(false);
+				clue.dispose();
 				// '별 헤는 밤' 힌트 출력
 				PoetFrame poet = new PoetFrame();
 			} catch (InterruptedException e) {
@@ -430,7 +425,7 @@ public class BreakLibrary extends JFrame {
 			try {
 				Thread.sleep(1000);  // milliseconds
 				// 1초 뒤 단서 발견 창 사라짐
-				clue.setVisible(false);
+				clue.dispose();
 //				if(mirrorCnt == 12) {
 //					background.remove(mirrorBtn);
 //					JOptionPane.showMessageDialog(background, "!!!");
