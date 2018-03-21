@@ -29,9 +29,13 @@ import javax.swing.JTextArea;
 public class LightOff extends JFrame {
 	// 배경
 	JScrollPane scrollPane;
+	JPanel background;
+	Image bgImg;
+	// frame
+	JFrame lightOff;
 	// textarea 배경
 	Image textboxBg = new ImageIcon("img/textbox.png").getImage();
-	// 이야기 진행 textarea : 클릭시 string 배열 출력.
+	// 인트로 진행 textarea : 쓰레드로 string 배열 한 글자씩 출력.
 	JTextArea storyConsol = new JTextArea() {
 		public void paintComponent(Graphics g) {
 			Dimension sizing = getSize();
@@ -40,14 +44,15 @@ public class LightOff extends JFrame {
 			super.paintComponent(g);
 		}
 	};
-	String[] startStory = new String[5];
+	// 인트로 문구
+	String[] intro = new String[5];
 	{
-		startStory[0] = "\n     먼지가 자욱한 방……."
+		intro[0] = "\n     먼지가 자욱한 방……."
 								+ "\n     서재인가….";
-		startStory[1] = "\n      앗, 문이 잠겼어…!";
-		startStory[2] = "\n     ……너무 어둡다.";
-		startStory[3] = "\n     벽에 스위치가 있다!";
-		startStory[4] = "\n     스위치를 눌러 불을 켜보자.";
+		intro[1] = "\n      앗, 문이 잠겼어…!";
+		intro[2] = "\n     ……너무 어둡다.";
+		intro[3] = "\n     벽에 스위치가 있다!";
+		intro[4] = "\n     스위치를 눌러 불을 켜보자.";
 	}
 	
 	// 클릭할 때마다 카운트 : 한 줄씩 출력
@@ -60,7 +65,6 @@ public class LightOff extends JFrame {
 	Cursor mouse;
 	Point point;
 	
-	
 	public LightOff() {
 		// 마우스 커서
 		tk = Toolkit.getDefaultToolkit();
@@ -70,9 +74,8 @@ public class LightOff extends JFrame {
 		setCursor(mouse);
 		
 		// 처음 : 불 꺼진 배경화면
-		Image bgImg = new ImageIcon("img/lightoff.PNG").getImage();
-		
-		JPanel background = new JPanel() {
+		bgImg = new ImageIcon("img/lightoff.PNG").getImage();
+		background = new JPanel() {
 			public void paintComponent(Graphics g) {
 				// 사이즈 가져오기
 				Dimension sizing = getSize();
@@ -84,6 +87,7 @@ public class LightOff extends JFrame {
 				super.paintComponent(g);
 			}
 		};
+		
 		
 		scrollPane = new JScrollPane(background);
 		setContentPane(scrollPane);
@@ -99,8 +103,6 @@ public class LightOff extends JFrame {
 		
 		// 텍스트 에어리어 이벤트 : 스위치 버튼 클릭 유도
 		storyConsol.setBounds(280, 480, 742, 232);
-		TextAction textClick = new TextAction();
-		storyConsol.addMouseListener(textClick);
 		storyConsol.setEditable(false);
 		// 폰트 설정
 		Font commonFont = new Font("맑은 고딕", Font.BOLD, 30);
@@ -108,7 +110,7 @@ public class LightOff extends JFrame {
 		storyConsol.setFont(commonFont);
 		storyConsol.setOpaque(true);
 		
-		storyConsol.setText(startStory[0]);
+		new IntroThread().start();
 		background.add(storyConsol);
 		
 		
@@ -126,44 +128,7 @@ public class LightOff extends JFrame {
 		
 	}
 	
-	class TextAction implements MouseListener {
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			clickCnt++;
-			switch(clickCnt) {
-			case 1 :
-				storyConsol.setText(startStory[1]);
-				break;
-			case 2 :
-				storyConsol.setText(startStory[2]);
-				break;
-			case 3 :
-				storyConsol.setText(startStory[3]);
-				break;
-			case 4 :
-				storyConsol.setText(startStory[4]);
-				break;
-			}
-		}
 
-		@Override
-		public void mouseEntered(MouseEvent e) {
-		}
-
-		@Override
-		public void mouseExited(MouseEvent e) {
-		}
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent e) {
-		}
-		
-	}
-	
 	
 	// 스위치 클릭시 마우스 이벤트
 	class SwitchAction implements MouseListener {
@@ -219,6 +184,33 @@ public class LightOff extends JFrame {
 			
 		} catch(Exception e) {
 			e.printStackTrace();
+		}
+	}
+	
+	// 인트로 쓰레드
+	class IntroThread extends Thread {
+		String storyLine = "";	// 한 줄씩 출력할 문자열 선언
+		
+		public void run() {
+			for(int i = 0; i < intro.length; i++) {
+				for(int j = 0; j < intro[i].length(); j++) {
+					// 0.1초에 한 글자씩 출력
+					try {
+						Thread.sleep(100);
+						storyLine += intro[i].charAt(j);
+						storyConsol.setText(storyLine);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+				// 배열 하나가 출력되고 나면 1초 동안 정지
+				try {
+					Thread.sleep(1000);
+					storyLine = "";
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 }

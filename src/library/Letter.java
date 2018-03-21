@@ -49,7 +49,6 @@ public class Letter extends JFrame {
 		// null layout
 		setLayout(null);
 		
-		
 		// 문제1 인트로 : 책 배경
 		book = new JFrame();
 		// 위치, 크기 설정
@@ -198,10 +197,10 @@ public class Letter extends JFrame {
 		public void run() {
 			try {
 				Thread.sleep(1);  // milliseconds
-				// 1초 뒤 책 배경 창 닫기
-				book.dispose();
-				// 문제 출력
+				// 1초 뒤 문제 출력
 				letter.setVisible(true);
+				// 책 배경 창 닫기
+				book.dispose();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

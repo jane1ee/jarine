@@ -41,7 +41,7 @@ public class BreakLibrary extends JFrame {
 	Image mouseImg;
 	Cursor mouse;
 	Point point;
-	// 문제1 : starry starry night  숫자 암호 : 답) starry
+	// 문제1 : starry starry night - 숫자 암호 : 답) starry
 	ImageIcon book;
 	JButton bookBtn;
 	// 문제2 : 별 헤는 밤에는 별이 몇 개 나올까?(제목포함)
@@ -134,8 +134,10 @@ public class BreakLibrary extends JFrame {
 					event.setVisible(true);
 					// 팝업 종료, 문제 출력
 					new LetterThread().start();
-				} else {
+				} else if (passCnt == 1) {
 					JOptionPane.showMessageDialog(background, "저기 걸려 있는 그림은 무슨 그림이지?");
+				} else {
+					JOptionPane.showMessageDialog(background, "거울이 좀 수상한데…….");
 				}
 			}
 		});
@@ -225,13 +227,13 @@ public class BreakLibrary extends JFrame {
 						++hintCnt;
 						if(hintCnt < 4) {
 							JOptionPane.showMessageDialog(background, "힌트를 사용합니다. 남은 힌트는 " + (3 - hintCnt) + "개 입니다.");
-							int hint1 = JOptionPane.showConfirmDialog(background, "책장의 문제입니까?");
+							int hint1 = JOptionPane.showConfirmDialog(background, "편지 문제입니까?");
 							if (hint1 == 0) {
 								JOptionPane.showMessageDialog(background, "간단한 숫자 암호입니다.\n"
 										+ "순서대로 알파벳을 써보세요.");
 								break;
 							} else if (hint1 == 1) {
-								int hint2 = JOptionPane.showConfirmDialog(background, "액자의 문제입니까?");
+								int hint2 = JOptionPane.showConfirmDialog(background, "별 문제입니까?");
 								if(hint2 == 0) {
 									JOptionPane.showMessageDialog(background, "별을 헤어보세요.");
 									break;
@@ -281,27 +283,33 @@ public class BreakLibrary extends JFrame {
 		mirrorBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				++mirrorCnt;
-				if(mirrorCnt == 12) {
-					// 힌트 발견 팝업 : 배경화면
-					clue = new JFrame();
-					// 위치, 크기 설정
-					clue.setBounds(650, 510, 542, 80);
-					// 창 크기 조절 : 불가능
-					clue.setResizable(false);
-					// X창 없애기
-					clue.setUndecorated(true);
-					// 이미지
-					clueLabel  = new JLabel();
-					clueImg = new ImageIcon("img/clue.png").getImage();
-					clueLabel.setIcon(new ImageIcon(clueImg));
-					clueLabel.setLocation(0, 0);
-					clue.add(clueLabel);
-					
-					// 보여지도록 하기
-					clue.setVisible(true);
-					// 단서 팝업 종료, 깨진 거울 나타나기
-					new MirrorThread().start();
+				if(passCnt == 0) {
+					JOptionPane.showMessageDialog(background, "나는 언제나 책 속에 편지를 끼워 놓았어….\n");
+				} else if(passCnt == 1) {
+					JOptionPane.showMessageDialog(background, "하늘과 바람과 별과 시… 초판본이네.");
+				} else {
+					++mirrorCnt;
+					if(mirrorCnt == 12) {
+						// 힌트 발견 팝업 : 배경화면
+						clue = new JFrame();
+						// 위치, 크기 설정
+						clue.setBounds(650, 510, 542, 80);
+						// 창 크기 조절 : 불가능
+						clue.setResizable(false);
+						// X창 없애기
+						clue.setUndecorated(true);
+						// 이미지
+						clueLabel  = new JLabel();
+						clueImg = new ImageIcon("img/clue.png").getImage();
+						clueLabel.setIcon(new ImageIcon(clueImg));
+						clueLabel.setLocation(0, 0);
+						clue.add(clueLabel);
+						
+						// 보여지도록 하기
+						clue.setVisible(true);
+						// 단서 팝업 종료, 깨진 거울 나타나기
+						new MirrorThread().start();
+					}
 				}
 			}
 		});
@@ -450,9 +458,10 @@ public class BreakLibrary extends JFrame {
 		@Override
 		public void run() {
 			try {
-				Thread.sleep(1000);  // milliseconds
+				Thread.sleep(2000);  // milliseconds
 				// 1초 뒤 단서 발견 창 사라짐
 				clue.dispose();
+				MirrorBGM("bgm/broken(1).wav");
 				JOptionPane.showMessageDialog(background, "!!!");
 				background.remove(mirrorBtn);
 				background.repaint();
