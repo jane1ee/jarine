@@ -107,7 +107,7 @@ public class Letter extends JFrame {
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				dispose();
+				book.dispose();
 			}
 		});
 		
@@ -134,6 +134,28 @@ public class Letter extends JFrame {
 		letterImg = new ImageIcon("img/letterImg.png").getImage();
 		letterLabel.setIcon(new ImageIcon(letterImg));
 		letterLabel.setLocation(0, 0);
+		letterLabel.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				letter.dispose();
+			}
+		});
 		
 		// 정답 입력
 		letterField = new JTextField();

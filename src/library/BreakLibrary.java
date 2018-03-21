@@ -267,11 +267,22 @@ public class BreakLibrary extends JFrame {
 		mirrorBtn.setBounds(426, 281, mirror.getIconWidth(), mirror.getIconHeight());
 		mirrorBtn.setBorderPainted(false);
 		mirrorBtn.addMouseListener(new OnOffMouse());
+		
+		
+		// 버튼 프레임에 추가
+		background.add(bookBtn);
+		background.add(starBtn);
+		background.add(starPoetBtn);
+		background.add(mirrorBtn);
+		background.add(hintBtn);
+		
+		
+		// 거울 버튼 이벤트 :  거울 12번 클릭하면 깨지고 열쇠 얻음
 		mirrorBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				++mirrorCnt;
-				while(mirrorCnt != 12) {
+				if(mirrorCnt == 12) {
 					// 힌트 발견 팝업 : 배경화면
 					clue = new JFrame();
 					// 위치, 크기 설정
@@ -294,18 +305,10 @@ public class BreakLibrary extends JFrame {
 				}
 			}
 		});
-		
-		
-		// 버튼 프레임에 추가
-		background.add(bookBtn);
-		background.add(starBtn);
-		background.add(starPoetBtn);
-		background.add(mirrorBtn);
-		background.add(hintBtn);
 	}
 
 	
-	// 배경음악 메소드 : 음량 -10 작게, 무한반복
+	// 배경음악 메소드 : 무한반복
 	public static void  LibraryBGM(String file, boolean loop) {
 		try {
 			AudioInputStream ais =
@@ -314,7 +317,7 @@ public class BreakLibrary extends JFrame {
 			clip.open(ais);
 			FloatControl gainControl = 
 				    (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-//				gainControl.setValue(-1	0.0f);
+//				gainControl.setValue(-10.0f);		// 음량 -10 작게
 			clip.start();
 			if(loop) {
 				clip.loop(-1);
@@ -422,9 +425,30 @@ public class BreakLibrary extends JFrame {
 			}
 		}
 	}
+
+	
+	// 거울 효과음 메소드 : 무한반복
+	public static void  MirrorBGM(String file, boolean loop) {
+		try {
+			AudioInputStream ais =
+					AudioSystem.getAudioInputStream(new BufferedInputStream(new FileInputStream(file)));
+			Clip clip = AudioSystem.getClip();
+			clip.open(ais);
+			FloatControl gainControl = 
+				    (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+//				gainControl.setValue(-10.0f);		// 음량 -10 작게
+			clip.start();
+			if(loop) {
+				clip.loop(-1);
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 
-	// 이벤트 2 힌트 쓰레드
+	// 이벤트 2 거울 깨지고 열쇠
 	class MirrorThread extends Thread {
 		@Override
 		public void run() {
@@ -432,10 +456,9 @@ public class BreakLibrary extends JFrame {
 				Thread.sleep(1000);  // milliseconds
 				// 1초 뒤 단서 발견 창 사라짐
 				clue.dispose();
-//				if(mirrorCnt == 12) {
-//					background.remove(mirrorBtn);
-//					JOptionPane.showMessageDialog(background, "!!!");
-//				}
+				JOptionPane.showMessageDialog(background, "!!!");
+				background.remove(mirrorBtn);
+				background.repaint();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

@@ -66,6 +66,28 @@ public class StarCount extends JFrame {
 		starImg = new ImageIcon("img/starCount.png").getImage();
 		starLabel.setIcon(new ImageIcon(starImg));
 		starLabel.setLocation(0, 0);
+		starLabel.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				star.dispose();
+			}
+		});
 
 		// 정답 입력
 		starField = new JTextField();
