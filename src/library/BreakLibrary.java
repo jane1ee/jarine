@@ -56,14 +56,14 @@ public class BreakLibrary extends JFrame {
 	JFrame clue;
 	JLabel clueLabel;
 	Image clueImg;
-	// 거울 버튼
-	ImageIcon mirror;
-	JButton mirrorBtn;
 	// 힌트 곰돌이
 	ImageIcon hintBear;
 	JButton hintBtn;
 	// 힌트 카운트
 	int hintCnt = 0;
+	// 거울 버튼
+	ImageIcon mirror;
+	JButton mirrorBtn;
 	// 거울 클릭 카운트 : 12번 누르면 버튼 사라지고 깨짐
 	int mirrorCnt = 0;
 //	// 정답 카운트 : passCnt = 3이면 Library 탈출
@@ -236,7 +236,7 @@ public class BreakLibrary extends JFrame {
 		});
 		
 		
-		//  이벤트 2 : 거울 버튼 이미지, 버튼, 위치
+		//  이벤트 2 : 거울 버튼
 		mirror = new ImageIcon("img/inthemirror.png");
 		mirrorBtn = new JButton(mirror);
 		mirrorBtn.setBounds(426, 281, mirror.getIconWidth(), mirror.getIconHeight());
@@ -245,9 +245,8 @@ public class BreakLibrary extends JFrame {
 		mirrorBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				++mirrorCnt;
 				while(mirrorCnt != 12) {
-					++mirrorCnt;
-
 					// 힌트 발견 팝업 : 배경화면
 					clue = new JFrame();
 					// 위치, 크기 설정
@@ -268,9 +267,6 @@ public class BreakLibrary extends JFrame {
 					// 시간 제한 쓰레드
 					new MirrorThread().start();
 					
-				}
-				if(mirrorCnt == 12) {
-					JOptionPane.showMessageDialog(background, "!!!");
 				}
 			}
 		});
@@ -389,6 +385,10 @@ public class BreakLibrary extends JFrame {
 				Thread.sleep(1000);  // milliseconds
 				// 1초 뒤 단서 발견 창 사라짐
 				clue.setVisible(false);
+//				if(mirrorCnt == 12) {
+//					background.remove(mirrorBtn);
+//					JOptionPane.showMessageDialog(background, "!!!");
+//				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
