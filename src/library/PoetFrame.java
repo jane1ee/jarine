@@ -14,18 +14,18 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-public class ClueFrame extends JFrame {
+public class PoetFrame extends JFrame {
 	// JFrame
-	JFrame clue, poet;
+	JFrame poet;
 	// JLabel
-	JLabel clueLabel, poetLabel;
+	JLabel poetLabel;
 	// 단서 발견, 단서 이미지
-	Image clueImg, poetImg;
+	Image poetImg;
 	// 마우스
 	Image mouseImg;
 	Cursor mouse;
 	
-	public ClueFrame() {
+	public PoetFrame() {
 		// 마우스 커서
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		// 마우스 이미지
@@ -35,26 +35,6 @@ public class ClueFrame extends JFrame {
 		setCursor(mouse);
 		
 		
-		// 문제1의 힌트 발견 팝업 : 배경화면
-		clue = new JFrame();
-		// 위치, 크기 설정
-		clue.setBounds(650, 510, 542, 80);
-		// 창 크기 조절 : 불가능
-		clue.setResizable(false);
-		// X창 없애기
-		clue.setUndecorated(true);
-		// 이미지
-		clueLabel  = new JLabel();
-		clueImg = new ImageIcon("img/clue.png").getImage();
-		clueLabel.setIcon(new ImageIcon(clueImg));
-		clueLabel.setLocation(0, 0);
-		clue.add(clueLabel);
-		
-		// 보여지도록 하기
-		clue.setVisible(true);
-		// 시간 제한 쓰레드
-		new ClueThread().start();
-
 		// 문제1 힌트
 		poet = new JFrame();
 		// 위치, 크기 설정
@@ -95,22 +75,7 @@ public class ClueFrame extends JFrame {
 		});
 		
 		poet.add(poetLabel);
+		poet.setVisible(true);
 	}
 
-	
-
-	class ClueThread extends Thread {
-		@Override
-		public void run() {
-			try {
-				Thread.sleep(1000);  // milliseconds
-				// 1초 뒤 단서 발견 창 사라짐
-				clue.setVisible(false);
-				// '별 헤는 밤' 힌트 출력
-				poet.setVisible(true);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-	}
 }

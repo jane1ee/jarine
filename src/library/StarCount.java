@@ -18,7 +18,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import library.ClueFrame.ClueThread;
 
 public class StarCount extends JFrame {
 	// JFrame

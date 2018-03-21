@@ -23,6 +23,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -33,15 +34,24 @@ public class BreakLibrary extends JFrame {
 	// 배경
 	JScrollPane scrollPane;
 	Image bgImg;
+	JPanel background;
 	// 마우스
 	Image mouseImg;
 	Cursor mouse;
+	//  단서 
+	JFrame clue;
+	JLabel clueLabel;
+	Image clueImg;
+	// 거울 버튼
+	JButton mirrorBtn;
+	ImageIcon mirror;
 	// 힌트 카운트
 	int hintCnt = 0;
 	// 거울 클릭 카운트 : 12번 누르면 버튼 사라지고 깨짐
 	int mirrorCnt = 0;
 //	// 정답 카운트 : passCnt = 3이면 Library 탈출
 //	int passCnt = 0;
+	
 	
 	public BreakLibrary() {
 		// 마우스 커서
@@ -55,7 +65,7 @@ public class BreakLibrary extends JFrame {
 		
 		// 배경화면
 		bgImg = new ImageIcon("img/library.png").getImage();
-		JPanel background = new JPanel() {
+		background = new JPanel() {
 			public void paintComponent(Graphics g) {
 				// 이미지 사이즈 가져오기
 				Dimension sizing = getSize();
@@ -100,7 +110,25 @@ public class BreakLibrary extends JFrame {
 		poetBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ClueFrame clue = new ClueFrame();
+				// 힌트 발견 팝업 : 배경화면
+				clue = new JFrame();
+				// 위치, 크기 설정
+				clue.setBounds(650, 510, 542, 80);
+				// 창 크기 조절 : 불가능
+				clue.setResizable(false);
+				// X창 없애기
+				clue.setUndecorated(true);
+				// 이미지
+				clueLabel  = new JLabel();
+				clueImg = new ImageIcon("img/clue.png").getImage();
+				clueLabel.setIcon(new ImageIcon(clueImg));
+				clueLabel.setLocation(0, 0);
+				clue.add(clueLabel);
+				
+				// 보여지도록 하기
+				clue.setVisible(true);
+				// 쓰레드 : 단서 문구 사라지고 힌트 출력
+				new PoetThread().start();
 			}
 		});
 		
@@ -174,8 +202,8 @@ public class BreakLibrary extends JFrame {
 		
 		
 		//  이벤트 2 : 거울 버튼 이미지, 버튼, 위치
-		ImageIcon mirror = new ImageIcon("img/inthemirror.png");
-		JButton mirrorBtn = new JButton(mirror);
+		mirror = new ImageIcon("img/inthemirror.png");
+		mirrorBtn = new JButton(mirror);
 		mirrorBtn.setBounds(426, 281, mirror.getIconWidth(), mirror.getIconHeight());
 		mirrorBtn.setBorderPainted(false);
 		mirrorBtn.addMouseListener(new OnOffMouse());
@@ -184,9 +212,30 @@ public class BreakLibrary extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				while(mirrorCnt != 12) {
 					++mirrorCnt;
+
+					// 힌트 발견 팝업 : 배경화면
+					clue = new JFrame();
+					// 위치, 크기 설정
+					clue.setBounds(650, 510, 542, 80);
+					// 창 크기 조절 : 불가능
+					clue.setResizable(false);
+					// X창 없애기
+					clue.setUndecorated(true);
+					// 이미지
+					clueLabel  = new JLabel();
+					clueImg = new ImageIcon("img/clue.png").getImage();
+					clueLabel.setIcon(new ImageIcon(clueImg));
+					clueLabel.setLocation(0, 0);
+					clue.add(clueLabel);
+					
+					// 보여지도록 하기
+					clue.setVisible(true);
+					// 시간 제한 쓰레드
+					new MirrorThread().start();
+					
 				}
 				if(mirrorCnt == 12) {
-					
+					JOptionPane.showMessageDialog(background, "!!!");
 				}
 			}
 		});
@@ -261,6 +310,36 @@ public class BreakLibrary extends JFrame {
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
 			
+		}
+	}
+	
+
+	class PoetThread extends Thread {
+		@Override
+		public void run() {
+			try {
+				Thread.sleep(1000);  // milliseconds
+				// 1초 뒤 단서 발견 창 사라짐
+				clue.setVisible(false);
+				// '별 헤는 밤' 힌트 출력
+				PoetFrame poet = new PoetFrame();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+
+	class MirrorThread extends Thread {
+		@Override
+		public void run() {
+			try {
+				Thread.sleep(1000);  // milliseconds
+				// 1초 뒤 단서 발견 창 사라짐
+				mirrorBtn.setVisible(false);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
