@@ -427,8 +427,8 @@ public class BreakLibrary extends JFrame {
 	}
 
 	
-	// 거울 효과음 메소드 : 무한반복
-	public static void  MirrorBGM(String file, boolean loop) {
+	// 거울 효과음 메소드
+	public static void  MirrorBGM(String file) {
 		try {
 			AudioInputStream ais =
 					AudioSystem.getAudioInputStream(new BufferedInputStream(new FileInputStream(file)));
@@ -438,9 +438,6 @@ public class BreakLibrary extends JFrame {
 				    (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 //				gainControl.setValue(-10.0f);		// 음량 -10 작게
 			clip.start();
-			if(loop) {
-				clip.loop(-1);
-			}
 			
 		} catch(Exception e) {
 			e.printStackTrace();
