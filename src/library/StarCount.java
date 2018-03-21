@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import library.ClueFrame.ClueThread;
@@ -31,8 +32,8 @@ public class StarCount extends JFrame {
 	// 마우스
 	Image mouseImg;
 	Cursor mouse;
-	// 정답 결과 리턴 필드
-	boolean stars;
+	// 정답이면 +1
+	int passCnt;
 	
 	public StarCount() {
 		// null layout
@@ -80,6 +81,7 @@ public class StarCount extends JFrame {
 		starLabel.setIcon(new ImageIcon(starImg));
 		starLabel.setLocation(0, 0);
 		
+		
 		// 정답 입력
 		starField = new JTextField();
 		starField.setBounds(200, 335, 200, 30);
@@ -90,7 +92,6 @@ public class StarCount extends JFrame {
 				if(inputStar.equals("13")) {
 					starField.setText("정답입니다.");
 					starField.setEditable(false);
-					stars = true;
 					new CloseThread().start();
 				} else {
 					starField.setText("다시 생각해보세요.");
@@ -99,7 +100,7 @@ public class StarCount extends JFrame {
 		});
 		
 		star.add(starField);
-		
+
 		
 		// 진입하면 마우스 커서 변경
 		star.addMouseListener(new MouseListener() {
@@ -134,9 +135,22 @@ public class StarCount extends JFrame {
 		star.add(starLabel);
 		// X 버튼 없애기
 		setUndecorated(true);
+		
+	}
+	
+	public StarCount(int passCnt) {
+		this.passCnt = passCnt;
+	}
+	
+	
+	public int getPassCnt() {
+		return passCnt;
 	}
 
-	
+	public void setPassCnt(int passCnt) {
+		this.passCnt = passCnt;
+	}
+
 
 	class StarThread extends Thread {
 		@Override
@@ -154,19 +168,14 @@ public class StarCount extends JFrame {
 	}
 	
 	
-	// BreakLibrary에 값을 리턴
-	public boolean trueAnswer() {
-		return stars;
-	}
-	
-	
 	class CloseThread extends Thread {
 		@Override
 		public void run() {
 			try {
 				Thread.sleep(3000);  // milliseconds
-				// 정답이면 3초 뒤 창 닫기
-				
+				// 정답이면 3초 뒤 창 닫기	
+				setPassCnt(1);
+				System.out.println(getPassCnt());
 				star.setVisible(false);
 			} catch (InterruptedException e) {
 				e.printStackTrace();

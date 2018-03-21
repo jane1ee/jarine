@@ -30,7 +30,8 @@ public class Letter extends JFrame {
 	Image mouseImg;
 	Cursor mouse;
 	// 정답 결과 리턴 필드
-	boolean fromLetter;
+	int getStarry;
+	boolean starry;
 	
 	public Letter() {
 		// null layout
@@ -52,21 +53,21 @@ public class Letter extends JFrame {
 		
 		// 정답 입력
 		letterField = new JTextField();
-		letterField.setBounds(210, 300, 200, 30);
+		letterField.setBounds(310, 290, 90, 30);
 		letterField.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String inputSubject = letterField.getText();
-				if(inputSubject.equals("별")) {
+				if(inputSubject.equals("starry")) {
 					letterField.setText("정답입니다.");
 					letterField.setEditable(false);
 					new CloseThread().start();
 				} else {
-					fromLetter = false;
 					letterField.setText("다시 생각해보세요.");
 				}
 			}
 		});
+		
 		
 		letter.add(letterField);
 		
@@ -103,8 +104,8 @@ public class Letter extends JFrame {
 
 		letter.add(letterLabel);
 		// X 버튼 없애기
-		setUndecorated(true);
 		letter.setVisible(true);
+		setUndecorated(true);
 		
 		
 		// 마우스 커서
@@ -116,13 +117,6 @@ public class Letter extends JFrame {
 
 	}
 
-	
-	
-	// LetterFromBook에 값을 리턴
-	public boolean trueAnswer() {
-		return fromLetter;
-	}
-	
 	
 	class CloseThread extends Thread {
 		@Override

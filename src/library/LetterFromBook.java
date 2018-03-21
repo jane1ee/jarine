@@ -88,11 +88,7 @@ public class LetterFromBook extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// 문제 2 출력
 				Letter letter = new Letter();
-				if(letter.trueAnswer()) {
-					if(starry) {
-						book.setVisible(false);
-					}
-				}
+				new CloseThread().start();
 			}
 		});
 		
@@ -150,11 +146,19 @@ public class LetterFromBook extends JFrame {
 			}
 		}
 	}
+
 	
 	
-	// BreakLibrary에 값을 리턴
-	public boolean trueAnswer() {
-		return starry;
+	class CloseThread extends Thread {
+		@Override
+		public void run() {
+			try {
+				Thread.sleep(5000);  // milliseconds
+				// 5초 뒤 창 닫기
+				book.setVisible(false);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
-	
 }

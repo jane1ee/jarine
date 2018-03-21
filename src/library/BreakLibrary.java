@@ -38,8 +38,10 @@ public class BreakLibrary extends JFrame {
 	Cursor mouse;
 	// 힌트 카운트
 	int hintCnt = 0;
-	// 정답 카운트 : passCnt = 3이면 Library 탈출
-	int passCnt = 0;
+	// 거울 클릭 카운트 : 12번 누르면 버튼 사라지고 깨짐
+	int mirrorCnt = 0;
+//	// 정답 카운트 : passCnt = 3이면 Library 탈출
+//	int passCnt = 0;
 	
 	public BreakLibrary() {
 		// 마우스 커서
@@ -84,12 +86,8 @@ public class BreakLibrary extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// 문제 1 출력
-				StarCount starCnt = new StarCount(boolean );
+				StarCount starCnt = new StarCount();
 				//정답이면 정답 카운트 passCnt 1 증가
-				if(starCnt.trueAnswer()) {
-					++passCnt;
-					System.out.println(passCnt);
-				}
 			}
 		});
 		
@@ -119,11 +117,6 @@ public class BreakLibrary extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// 문제 2 출력
 				LetterFromBook lfb =  new LetterFromBook();
-				//정답이면 정답 카운트 passCnt 1 증가
-				if(lfb.trueAnswer()) {
-					++passCnt;
-					System.out.println(passCnt);
-				}
 			}
 		});
 
@@ -154,6 +147,9 @@ public class BreakLibrary extends JFrame {
 								if(hint2 == 0) {
 									JOptionPane.showMessageDialog(background, "별을 헤어보세요.");
 									break;
+								} else if( hint2 == 1 ) {
+									JOptionPane.showMessageDialog(background, "중요한 것은 거울 속에 있어요.\n"
+											+ "시침이 한 바퀴 돌면 나타나요.");
 								} else {
 									JOptionPane.showMessageDialog(background, "오늘 발표 기대하고 있겠습니다~!");
 									break;
@@ -183,6 +179,17 @@ public class BreakLibrary extends JFrame {
 		mirrorBtn.setBounds(426, 281, mirror.getIconWidth(), mirror.getIconHeight());
 		mirrorBtn.setBorderPainted(false);
 		mirrorBtn.addMouseListener(new OnOffMouse());
+		mirrorBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				while(mirrorCnt != 12) {
+					++mirrorCnt;
+				}
+				if(mirrorCnt == 12) {
+					
+				}
+			}
+		});
 		
 		
 		// 버튼 프레임에 추가
