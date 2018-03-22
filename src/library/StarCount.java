@@ -31,8 +31,10 @@ public class StarCount extends JFrame {
 	// 답 입력 텍스트 필드
 	JTextField starField;
 	// 마우스
+	Toolkit tk;
 	Image mouseImg;
 	Cursor mouse;
+	Point point;
 	// 쓰레드로 정답 넘기기
 	StarThread starFlag;
 
@@ -47,9 +49,9 @@ public class StarCount extends JFrame {
 		setLayout(null);
 
 		// 마우스 커서
-		Toolkit tk = Toolkit.getDefaultToolkit();
+		tk = Toolkit.getDefaultToolkit();
 		mouseImg = new ImageIcon("img/cursor.png").getImage();
-		Point point = new Point(0, 0);
+		point = new Point(0, 0);
 		mouse = tk.createCustomCursor(mouseImg, point, "wonder");
 		setCursor(mouse);
 
@@ -128,9 +130,9 @@ public class StarCount extends JFrame {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				// 마우스 커서
-				Toolkit tk = Toolkit.getDefaultToolkit();
+				tk = Toolkit.getDefaultToolkit();
 				mouseImg = new ImageIcon("img/cursor.png").getImage();
-				Point point = new Point(0, 0);
+				point = new Point(0, 0);
 				mouse = tk.createCustomCursor(mouseImg, point, "wonder");
 				star.setCursor(mouse);
 			}

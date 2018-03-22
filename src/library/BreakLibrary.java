@@ -38,6 +38,7 @@ public class BreakLibrary extends JFrame {
 	JScrollPane scrollPane;
 	Image bgImg;
 	JPanel background;
+	JPanel background2;
 	// 마우스
 	Toolkit tk;
 	Image mouseImg;
@@ -286,7 +287,7 @@ public class BreakLibrary extends JFrame {
 		keyLabel = new JLabel();
 		keyImg = new ImageIcon("img/key.png");
 		keyLabel.setIcon(keyImg);
-		keyLabel.setBounds(400, 250, keyImg.getIconWidth(), keyImg.getIconHeight());
+		keyLabel.setBounds(450, 200, keyImg.getIconWidth(), keyImg.getIconHeight());
 		keyLabel.setCursor(mouse);
 		
 		
@@ -549,6 +550,13 @@ public class BreakLibrary extends JFrame {
 					e.printStackTrace();
 				}
 			}
+			
+
+			
+			// 문 열기
+			NextRoom next = new NextRoom();	// 여기에서 새 프레임 호출시키고
+			dispose();
+			
 		}
 	}
 }

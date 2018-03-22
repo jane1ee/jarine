@@ -78,8 +78,8 @@ public class LightOff extends JFrame {
 		setContentPane(scrollPane);
 
 
-		// 배경음악, 반복재생
-		LibraryBGM("bgm/Wood_Door_Open_Close.wav");
+		// 방문 여는 효과음
+		OpenBGM("bgm/Wood_Door_Open_Close.wav");
 
 		// 패널 레이아웃 설정
 		background.setLayout(null);
@@ -166,7 +166,7 @@ public class LightOff extends JFrame {
 	}
 
 	// 배경음악 메소드 : 나무문
-	public static void  LibraryBGM(String file) {
+	public static void  OpenBGM(String file) {
 		try {
 			AudioInputStream ais =
 					AudioSystem.getAudioInputStream(new BufferedInputStream(new FileInputStream(file)));
@@ -178,6 +178,7 @@ public class LightOff extends JFrame {
 			e.printStackTrace();
 		}
 	}
+	
 	
 	// 인트로 쓰레드
 	class IntroThread extends Thread {
