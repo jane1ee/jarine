@@ -251,6 +251,7 @@ public class BreakLibrary extends JFrame {
 								} else if( hint2 == 1 ) {
 									JOptionPane.showMessageDialog(background, "중요한 것은 거울 속에 있어요.\n"
 											+ "시침이 한 바퀴 돌면 나타나요.");
+									break;
 								} else {
 									JOptionPane.showMessageDialog(background, "오늘 발표 기대하고 있겠습니다~!");
 									break;
@@ -282,13 +283,6 @@ public class BreakLibrary extends JFrame {
 		mirrorBtn.addMouseListener(new OnOffMouse());
 
 		// 깨진 거울에서 열쇠 얻기
-		keyLabel = new JLabel();
-		keyImg = new ImageIcon("img/key.png");
-		keyLabel.setIcon(keyImg);
-		keyLabel.setBounds(470, 150, keyImg.getIconWidth(), keyImg.getIconHeight());
-		keyLabel.setCursor(mouse);
-
-		// 밖으로 나가는 문구 출력
 		keyLabel = new JLabel();
 		keyImg = new ImageIcon("img/key.png");
 		keyLabel.setIcon(keyImg);
