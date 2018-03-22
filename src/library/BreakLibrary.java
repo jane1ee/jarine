@@ -68,8 +68,11 @@ public class BreakLibrary extends JFrame {
 	JButton mirrorBtn;
 	// 거울 클릭 카운트 : 12번 누르면 버튼 사라지고 깨짐
 	int mirrorCnt = 0;
-//	// 정답 카운트 : passCnt = 3이면 Library 탈출
+	// 정답 카운트 : passCnt = 3이면 Library 탈출
 	int passCnt = 0;
+	// 열쇠
+	ImageIcon keyImg;
+	JLabel keyLabel;
 	
 	
 	public BreakLibrary() {
@@ -263,12 +266,19 @@ public class BreakLibrary extends JFrame {
 		});
 		
 		
-		//  이벤트 2 : 거울 버튼
+		// 이벤트 2 : 거울 버튼
 		mirror = new ImageIcon("img/inthemirror.png");
 		mirrorBtn = new JButton(mirror);
 		mirrorBtn.setBounds(426, 281, mirror.getIconWidth(), mirror.getIconHeight());
 		mirrorBtn.setBorderPainted(false);
 		mirrorBtn.addMouseListener(new OnOffMouse());
+
+		// 깨진 거울에서 열쇠 얻기
+		keyLabel = new JLabel();
+		keyImg = new ImageIcon("img/key.png");
+		keyLabel.setIcon(keyImg);
+		keyLabel.setBounds(400, 250, keyImg.getIconWidth(), keyImg.getIconHeight());
+		keyLabel.setCursor(mouse);
 		
 		
 		// 버튼 프레임에 추가
@@ -286,7 +296,7 @@ public class BreakLibrary extends JFrame {
 				if(passCnt == 0) {
 					JOptionPane.showMessageDialog(background, "나는 언제나 책 속에 편지를 끼워 놓았어….\n");
 				} else if(passCnt == 1) {
-					JOptionPane.showMessageDialog(background, "하늘과 바람과 별과 시… 초판본이네.");
+					JOptionPane.showMessageDialog(background, "액자에 하늘과 바람과 별과 시 초판본이 있어.");
 				} else {
 					++mirrorCnt;
 					if(mirrorCnt == 12) {
@@ -461,9 +471,13 @@ public class BreakLibrary extends JFrame {
 				Thread.sleep(2000);  // milliseconds
 				// 1초 뒤 단서 발견 창 사라짐
 				clue.dispose();
+				++passCnt;
 				MirrorBGM("bgm/broken(1).wav");
-				JOptionPane.showMessageDialog(background, "!!!");
 				background.remove(mirrorBtn);
+				background.repaint();
+				JOptionPane.showMessageDialog(background, "!!!");
+				// 열쇠 출력
+				background.add(keyLabel);
 				background.repaint();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
