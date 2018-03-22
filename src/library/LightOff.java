@@ -35,25 +35,10 @@ public class LightOff extends JFrame {
 	JFrame lightOff;
 	// textarea 배경
 	Image textboxBg = new ImageIcon("img/textbox.png").getImage();
-	// 인트로 진행 textarea : 쓰레드로 string 배열 한 글자씩 출력.
-	JTextArea storyConsol = new JTextArea() {
-		public void paintComponent(Graphics g) {
-			Dimension sizing = getSize();
-			g.drawImage(textboxBg, 0, 0, (int)sizing.getWidth(), (int)sizing.getHeight(), null);
-			setOpaque(false);
-			super.paintComponent(g);
-		}
-	};
-	// 인트로 문구
-	String[] intro = new String[5];
-	{
-		intro[0] = "\n     먼지가 자욱한 방……."
-								+ "\n     서재인가….";
-		intro[1] = "\n      앗, 문이 잠겼어…!";
-		intro[2] = "\n     ……너무 어둡다.";
-		intro[3] = "\n     벽에 스위치가 있다!";
-		intro[4] = "\n     스위치를 눌러 불을 켜보자.";
-	}
+	// 인트로 텍스트 박스
+	JTextArea storyConsol;
+	// 인트로 문구 배열
+	String[] intro;
 	
 	// 클릭할 때마다 카운트 : 한 줄씩 출력
 	int clickCnt = 0;
@@ -100,8 +85,15 @@ public class LightOff extends JFrame {
 		background.setLayout(null);
 		
 		
-		
-		// 텍스트 에어리어 이벤트 : 스위치 버튼 클릭 유도
+		// 인트로 : 스위치 버튼 클릭 유도
+		storyConsol = new JTextArea() {
+			public void paintComponent(Graphics g) {
+				Dimension sizing = getSize();
+				g.drawImage(textboxBg, 0, 0, (int)sizing.getWidth(), (int)sizing.getHeight(), null);
+				setOpaque(false);
+				super.paintComponent(g);
+			}
+		};
 		storyConsol.setBounds(280, 480, 742, 232);
 		storyConsol.setEditable(false);
 		// 폰트 설정
@@ -192,9 +184,19 @@ public class LightOff extends JFrame {
 		String storyLine = "";	// 한 줄씩 출력할 문자열 선언
 		
 		public void run() {
+			 intro = new String[5];
+				{
+					intro[0] = "\n     먼지가 자욱한 방……."
+											+ "\n     서재인가….";
+					intro[1] = "\n      앗, 문이 잠겼어…!";
+					intro[2] = "\n     ……너무 어둡다.";
+					intro[3] = "\n     벽에 스위치가 있다!";
+					intro[4] = "\n     스위치를 눌러 불을 켜보자.";
+				}
+				
 			for(int i = 0; i < intro.length; i++) {
 				for(int j = 0; j < intro[i].length(); j++) {
-					// 0.1초에 한 글자씩 출력
+					// 0.05초에 한 글자씩 출력
 					try {
 						Thread.sleep(100);
 						storyLine += intro[i].charAt(j);

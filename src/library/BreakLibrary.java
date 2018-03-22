@@ -30,6 +30,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 
+import library.LightOff.IntroThread;
+
 
 public class BreakLibrary extends JFrame {
 	// 배경
@@ -73,6 +75,12 @@ public class BreakLibrary extends JFrame {
 	// 열쇠
 	ImageIcon keyImg;
 	JLabel keyLabel;
+	// textarea 배경
+	Image textboxBg = new ImageIcon("img/textbox.png").getImage();
+	// out : 텍스트박스
+	JTextArea storyConsol;
+	// 출력할 문구 배열
+	String[] outro;
 	
 	
 	public BreakLibrary() {
@@ -277,8 +285,16 @@ public class BreakLibrary extends JFrame {
 		keyLabel = new JLabel();
 		keyImg = new ImageIcon("img/key.png");
 		keyLabel.setIcon(keyImg);
+		keyLabel.setBounds(470, 150, keyImg.getIconWidth(), keyImg.getIconHeight());
+		keyLabel.setCursor(mouse);
+
+		// 밖으로 나가는 문구 출력
+		keyLabel = new JLabel();
+		keyImg = new ImageIcon("img/key.png");
+		keyLabel.setIcon(keyImg);
 		keyLabel.setBounds(400, 250, keyImg.getIconWidth(), keyImg.getIconHeight());
 		keyLabel.setCursor(mouse);
+		
 		
 		
 		// 버튼 프레임에 추가
@@ -479,8 +495,65 @@ public class BreakLibrary extends JFrame {
 				// 열쇠 출력
 				background.add(keyLabel);
 				background.repaint();
+
+				// 아웃트로 : 열쇠로 방 탈출
+				// 쓰레드로 string 배열 한 글자씩 출력.
+				storyConsol = new JTextArea() {
+					public void paintComponent(Graphics g) {
+						Dimension sizing = getSize();
+						g.drawImage(textboxBg, 0, 0, (int)sizing.getWidth(), (int)sizing.getHeight(), null);
+						setOpaque(false);
+						super.paintComponent(g);
+					}
+				};
+				storyConsol.setBounds(280, 480, 742, 232);
+				storyConsol.setEditable(false);
+				// 폰트 설정
+				Font commonFont = new Font("맑은 고딕", Font.BOLD, 30);
+				storyConsol.setForeground(Color.white);
+				storyConsol.setFont(commonFont);
+				storyConsol.setOpaque(true);
+				new OutroThread().start();
+				background.add(storyConsol);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
+			}
+		}
+	}	
+	
+	
+	// 아웃트로 쓰레드
+	class OutroThread extends Thread {
+		String storyLine = "";	// 한 줄씩 출력할 문자열 선언
+		
+		public void run() {
+			 outro = new String[5];
+				{
+					outro[0] = "\n     깨진 거울 틈에 열쇠가 있어…!";
+					outro[1] = "\n     이 열쇠는 뭐지? …….";
+					outro[2] = "\n     ……잠긴 문을 열어볼까?";
+					outro[3] = "\n     열렸다!";
+					outro[4] = "\n     얼른 이곳을 탈출하자.";
+				}
+				
+			for(int i = 0; i < outro.length; i++) {
+				for(int j = 0; j < outro[i].length(); j++) {
+					// 0.01초에 한 글자씩 출력
+					try {
+						Thread.sleep(100);
+						storyLine += outro[i].charAt(j);
+						storyConsol.setText(storyLine);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+				// 배열 하나가 출력되고 나면 1초 동안 정지
+				try {
+					Thread.sleep(1000);
+					storyLine = "";
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
