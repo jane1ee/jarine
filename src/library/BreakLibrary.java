@@ -111,7 +111,7 @@ public class BreakLibrary extends JFrame {
 		
 		
 		// 배경음악, 반복재생
-		LibraryBGM("bgm/Under_Cover.wav", true);
+		LibraryBGM("bgm/hfo.wav", true);
 		
 		// 패널 레이아웃 설정
 		background.setLayout(null);
@@ -486,8 +486,7 @@ public class BreakLibrary extends JFrame {
 				MirrorBGM("bgm/broken(1).wav");
 				background.remove(mirrorBtn);
 				background.repaint();
-				JOptionPane.showMessageDialog(background, "!!!");
-				// 열쇠 출력
+				// 열쇠 다이얼로그 출력
 				background.add(keyLabel);
 				background.repaint();
 
@@ -524,8 +523,9 @@ public class BreakLibrary extends JFrame {
 		public void run() {
 			 outro = new String[5];
 				{
-					outro[0] = "\n     깨진 거울 틈에 열쇠가 있어…!";
-					outro[1] = "\n     이 열쇠는 뭐지? …….";
+					outro[0] = "\n     !!! "
+							+ "\n     깨진 거울 틈에 열쇠가 있어…!";
+					outro[1] = "\n     이 열쇠는 뭐지?";
 					outro[2] = "\n     ……잠긴 문을 열어볼까?";
 					outro[3] = "\n     열렸다!";
 					outro[4] = "\n     얼른 이곳을 탈출하자.";
@@ -542,9 +542,9 @@ public class BreakLibrary extends JFrame {
 						e.printStackTrace();
 					}
 				}
-				// 배열 하나가 출력되고 나면 1초 동안 정지
+				// 배열 하나가 출력되고 나면 1.5초 동안 정지
 				try {
-					Thread.sleep(1000);
+					Thread.sleep(1500);
 					storyLine = "";
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -554,8 +554,8 @@ public class BreakLibrary extends JFrame {
 
 			
 			// 문 열기
-			NextRoom next = new NextRoom();	// 여기에서 새 프레임 호출시키고
-			dispose();
+			NextRoom next = new NextRoom();	// 다음 방으로 가는 프레임 띄움
+			dispose();	// 현재 창 닫기
 			
 		}
 	}

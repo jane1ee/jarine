@@ -21,17 +21,14 @@ public class PoetFrame extends JFrame {
 	JLabel poetLabel;
 	// 단서 발견, 단서 이미지
 	Image poetImg;
-	// 마우스
-	Image mouseImg;
-	Cursor mouse;
 	
 	public PoetFrame() {
 		// 마우스 커서
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		// 마우스 이미지
-		mouseImg = new ImageIcon("img/cursor.png").getImage();
+		Image mouseImg = new ImageIcon("img/cursor.png").getImage();
 		Point point = new Point(0, 0);
-		mouse = tk.createCustomCursor(mouseImg, point, "wonder");
+		Cursor mouse = tk.createCustomCursor(mouseImg, point, "wonder");
 		setCursor(mouse);
 		
 		

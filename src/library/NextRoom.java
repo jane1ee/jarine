@@ -3,7 +3,12 @@ package library;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -23,7 +28,7 @@ public class NextRoom extends  JFrame {
 	
 
 	
-	public void OutroFrame() {			// 여기부터 소스 복붙
+	public void OutroFrame() {
 	      tk = Toolkit.getDefaultToolkit();
 	      gifBg = tk.getImage("Img/opendoor.gif");
 
@@ -50,7 +55,25 @@ public class NextRoom extends  JFrame {
 	      this.setTitle("to the Next Room");
 	      this.setIconImage(new ImageIcon("img/favicon.jpg").getImage());
 	      this.setResizable(false);
+
+	      // 방문 여는 효과음
+	      OpenBGM("bgm/Wood_Door_Open_Close.wav");
 	      this.setVisible(true);
 
 	   }
+
+	
+	// 배경음악 메소드 : 나무문
+	public static void  OpenBGM(String file) {
+		try {
+			AudioInputStream ais =
+					AudioSystem.getAudioInputStream(new BufferedInputStream(new FileInputStream(file)));
+			Clip clip = AudioSystem.getClip();
+			clip.open(ais);
+			clip.start();
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

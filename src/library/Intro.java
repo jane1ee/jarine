@@ -33,7 +33,7 @@ public class Intro extends  JFrame {
 	
 
 	
-	public void IntroFrame() {			// 여기부터 소스 복붙
+	public void IntroFrame() {
 	      tk = Toolkit.getDefaultToolkit();
 	      gifBg = tk.getImage("Img/yourname.gif");
 

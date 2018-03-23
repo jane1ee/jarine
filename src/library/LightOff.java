@@ -187,10 +187,9 @@ public class LightOff extends JFrame {
 		public void run() {
 			 intro = new String[5];
 				{
-					intro[0] = "\n     먼지가 자욱한 방……."
-											+ "\n     서재인가….";
-					intro[1] = "\n      앗, 문이 잠겼어…!";
-					intro[2] = "\n     ……너무 어둡다.";
+					intro[0] = "\n     머리 아파…\n     여기는 어디지….";
+					intro[1] = "\n     문은 잠겼나봐….\n     으 먼지….";
+					intro[2] = "\n     ……너무 어두워.";
 					intro[3] = "\n     벽에 스위치가 있다!";
 					intro[4] = "\n     스위치를 눌러 불을 켜보자.";
 				}
